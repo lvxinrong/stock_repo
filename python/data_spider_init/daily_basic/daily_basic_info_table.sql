@@ -1,0 +1,20 @@
+CREATE TABLE daily_basic_info (
+    ts_code VARCHAR(100) NOT NULL COMMENT 'TS股票代码',
+    trade_date VARCHAR(100) NOT NULL COMMENT '交易日期',
+    close FLOAT COMMENT '当日收盘价',
+    turnover_rate FLOAT COMMENT '换手率（%）',
+    turnover_rate_f FLOAT COMMENT '换手率（自由流通股）',
+    volume_ratio FLOAT COMMENT '量比',
+    pe FLOAT COMMENT '市盈率（总市值/净利润，亏损的PE为空）',
+    pe_ttm FLOAT COMMENT '市盈率（TTM，亏损的PE为空）',
+    pb FLOAT COMMENT '市净率（总市值/净资产）',
+    ps FLOAT COMMENT '市销率',
+    ps_ttm FLOAT COMMENT '市销率（TTM）',
+    dv_ratio FLOAT COMMENT '股息率（%）',
+    dv_ttm FLOAT COMMENT '股息率（TTM）（%）',
+    total_share FLOAT COMMENT '总股本（万股）',
+    float_share FLOAT COMMENT '流通股本（万股）',
+    free_share FLOAT COMMENT '自由流通股本（万）',
+    total_mv FLOAT COMMENT '总市值（万元）',
+    circ_mv FLOAT COMMENT '流通市值（万元）'
+) COMMENT = '股票交易及财务数据';
