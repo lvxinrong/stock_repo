@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2024-11-15
  */
 public interface IIndexBasicService extends IService<IndexBasic> {
-
+    String selectIndexNameByCode(String indexCode);
 }

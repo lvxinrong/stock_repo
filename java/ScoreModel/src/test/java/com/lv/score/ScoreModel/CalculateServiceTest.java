@@ -1,6 +1,6 @@
 package com.lv.score.ScoreModel;
 
-import com.lv.score.ScoreModel.calCore.CalculateService;
+import com.lv.score.ScoreModel.cal_core.CalculateService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
