@@ -8,3 +8,6 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath:/xml/**.xml
+
+stock:
+  stock_month: 202410

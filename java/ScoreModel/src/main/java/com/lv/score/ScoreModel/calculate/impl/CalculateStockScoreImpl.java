@@ -1,5 +1,6 @@
 package com.lv.score.ScoreModel.calculate.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.lv.score.ScoreModel.calculate.CalculateStockScore;
 import com.lv.score.ScoreModel.calculate.entity.CalculateResultDaily;
 import com.lv.score.ScoreModel.calculate.entity.CalculateResultMonth;
@@ -14,10 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -34,15 +32,26 @@ public class CalculateStockScoreImpl implements CalculateStockScore {
 
     @Override
     public List<CalculateResultDaily> getStockScore(StockScoreInputParam stockScoreInputParam) {
+        // 查询当前股票所对应板块的指数数据
+        String index_ts_code = TsCodeIndexConstant.getIndexTsCode(stockScoreInputParam.getTs_code());
+        stockScoreInputParam.setIndex_code(index_ts_code);
+        return getStockScoreByIndex(stockScoreInputParam);
+    }
+
+    @Override
+    public List<CalculateResultDaily> getStockScoreByIndex(StockScoreInputParam stockScoreInputParam) {
         List<CalculateResultDaily> result = new ArrayList<>();
         String tsCode = stockScoreInputParam.getTs_code();
         // 查询当前ts code 对应时间的所有交易数据
         List<TradeDaily> tradeDailies = iTradeDailyService.getTradeDailyDataByTsCodeAndTradeDate(stockScoreInputParam.getTs_code(), stockScoreInputParam.getDate());
         // 查询当前股票所对应板块的指数数据
-        String index_ts_code = TsCodeIndexConstant.getIndexTsCode(stockScoreInputParam.getTs_code());
-
-        List<IndexBasicDaily> indexBasicDailies = iIndexBasicDailyService.getTradeDailyDataByTsCodeAndTradeDate(index_ts_code, stockScoreInputParam.getDate());
-
+        String index_ts_code = stockScoreInputParam.getIndex_code();
+        List<IndexBasicDaily> indexBasicDailies;
+        if (CollectionUtils.isNotEmpty(stockScoreInputParam.getIndexBasicDailies())) {
+            indexBasicDailies = stockScoreInputParam.getIndexBasicDailies();
+        } else {
+            indexBasicDailies = iIndexBasicDailyService.getTradeDailyDataByTsCodeAndTradeDate(index_ts_code, stockScoreInputParam.getDate());
+        }
         for (TradeDaily tradeDaily : tradeDailies) {
             String tradeDate = tradeDaily.getTradeDate();
             Optional<IndexBasicDaily> curr = indexBasicDailies.stream().filter(x -> Objects.equals(x.getTradeDate(), tradeDate)).findAny();

@@ -4,7 +4,9 @@ from get_tusahre_api_pro import get_tushare_api_pro
 from date_format_utils import generate_dates_for_month
 
 
-ts_code_index = ['000001.SH', '399001.SZ', '399006.SZ']
+# ts_code_index = ['000001.SH', '399001.SZ', '399006.SZ', '399300.SZ']
+ts_code_index = ['399300.SZ']
+
 table_name = 'index_basic_daily'
 
 year = 2024
@@ -16,7 +18,7 @@ cnx = get_mysql_conn()
 # 将DataFrame写入数据库
 cursor = cnx.cursor()
 for date in dates:
-    df = pro.index_daily(ts_code=ts_code_index[2], trade_date=date)
+    df = pro.index_daily(ts_code=ts_code_index[0], trade_date=date)
     # 转换为DataFrame
     ini_df = pd.DataFrame(df)
     df = ini_df.astype(object).where(pd.notnull(ini_df), None)
