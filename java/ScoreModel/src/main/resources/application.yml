@@ -4,11 +4,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
-    url: jdbc:mysql://127.0.0.1:3306/good_stock?useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://192.168.3.8:3306/good_stock?useSSL=false&serverTimezone=Asia/Shanghai
 
 mybatis-plus:
   mapper-locations: classpath:/xml/**.xml
-
-elasticsearch:
-  host: localhost
-  port: 9200
