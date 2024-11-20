@@ -10,5 +10,9 @@ public interface SaveCalResult {
 
     void saveDailyScoreToES(Map<String, List<CalculateResultDaily>> calResultMap);
 
+    void saveDailyScoreToES(Map<String, List<CalculateResultDaily>> calResultMap, String indexCode);
+
     void saveMonthScoreToES(List<CalculateResultMonth> montScoreList);
+
+    void saveMonthScoreToES(List<CalculateResultMonth> montScoreList, String indexCode);
 }

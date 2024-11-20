@@ -28,26 +28,6 @@ public class MySQLGeneratorTest extends BaseGeneratorTest {
             .build();
 
     @Test
-    public void testSimple() {
-        AutoGenerator generator = new AutoGenerator(DATA_SOURCE_CONFIG);
-        // 自定义路径
-        Map<OutputFile, String> customPathInfo = new EnumMap<>(OutputFile.class);
-        // 项目路径
-        String projectPath = System.getProperty("user.dir");
-        // src/main/java
-        String srcMain = String.join(File.separator, "src", "main", "java");
-        // 包名
-        String packageName = "com.lv.score.ScoreModel".replace('.', File.separatorChar);
-        // 自定义控制器路径
-        customPathInfo.put(OutputFile.controller, String.join(File.separator, projectPath, srcMain, packageName));
-        System.out.println(customPathInfo);
-        generator.packageInfo(new PackageConfig.Builder().parent("com.lv.score.ScoreModel").pathInfo(customPathInfo).build());
-        generator.strategy(strategyConfig().addInclude("cyz_100_stock","daily_basic_info", "hs_300_stock").build());
-        generator.global(globalConfig().build());
-        generator.execute();
-    }
-
-    @Test
     public void fastAutoGenerator() {
         FastAutoGenerator.create("jdbc:mysql://127.0.0.1:3306/good_stock?useSSL=false&serverTimezone=Asia/Shanghai", "root", "123456")
                 .globalConfig(builder -> builder
@@ -64,7 +44,7 @@ public class MySQLGeneratorTest extends BaseGeneratorTest {
                         .xml("mapper.xml")
                         .pathInfo(Collections.singletonMap(OutputFile.xml, "H:\\stock\\stock_repo\\java\\ScoreModel\\src\\main\\resources\\xml"))
                 )
-                .strategyConfig(builder -> builder.addInclude("cyz_100_stock","daily_basic_info", "hs_300_stock")
+                .strategyConfig(builder -> builder.addInclude("zh_100_stock","zh_500_stock", "zh_800_stock", "zh_1000_stock")
                         .entityBuilder()
                         .enableLombok()
                 )

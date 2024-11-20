@@ -26,4 +26,14 @@ public class SaveMontScoreToEs {
                         .document(product))));
         elasticsearchClient.bulk(br.build());
     }
+
+    public void bulkSave(List<CalculateResultMonthEsEntity> products, String indexCode) throws IOException {
+        BulkRequest.Builder br = new BulkRequest.Builder();
+        products.forEach(product->br.operations(operation->
+                operation.index(i->i
+                        .index(indexCode + "_" + PRODUCTS)
+                        .id(product.getTs_code())
+                        .document(product))));
+        elasticsearchClient.bulk(br.build());
+    }
 }

@@ -44,10 +44,33 @@ public class SaveCalResultImpl implements SaveCalResult {
     }
 
     @Override
+    public void saveDailyScoreToES(Map<String, List<CalculateResultDaily>> calResultMap, String indexCode) {
+        List<CalculateResultDailyEsEntity> saveList = new ArrayList<>();
+        calResultMap.values().forEach(e -> {
+            saveList.addAll(e.stream().map(CalculateResultDailyEsEntity::new).toList());
+        });
+        try {
+            saveDailyScoreToES.bulkSave(saveList, indexCode);
+        } catch (IOException e) {
+            log.error("saveMonthScoreToES Exception;", e);
+        }
+    }
+
+    @Override
     public void saveMonthScoreToES(List<CalculateResultMonth> montScoreList) {
         List<CalculateResultMonthEsEntity> saveList = montScoreList.stream().map(CalculateResultMonthEsEntity::new).toList();
         try {
             saveMontScoreToEs.bulkSave(saveList);
+        } catch (IOException e) {
+            log.error("saveMonthScoreToES Exception;", e);
+        }
+    }
+
+    @Override
+    public void saveMonthScoreToES(List<CalculateResultMonth> montScoreList, String indexCode) {
+        List<CalculateResultMonthEsEntity> saveList = montScoreList.stream().map(CalculateResultMonthEsEntity::new).toList();
+        try {
+            saveMontScoreToEs.bulkSave(saveList, indexCode);
         } catch (IOException e) {
             log.error("saveMonthScoreToES Exception;", e);
         }

@@ -2,8 +2,10 @@
   <aside class="sidebar">
     <ul>
       <li><router-link to="/hushen300">沪深300</router-link></li>
-      <li><router-link to="/chuangyeban">创业板</router-link></li>
-      <li><router-link to="/shuangchuang50">双创50</router-link></li>
+      <li><router-link to="/zh100">中证100</router-link></li>
+      <li><router-link to="/zh500">中证500</router-link></li>
+      <li><router-link to="/zh800">中证800</router-link></li>
+      <li><router-link to="/zh1000">中证1000</router-link></li>
     </ul>
   </aside>
 </template>
@@ -32,3 +34,5 @@
   text-decoration: underline;
 }
 </style>
+<script setup>
+</script>

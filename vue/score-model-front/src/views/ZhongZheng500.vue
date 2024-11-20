@@ -2,10 +2,9 @@
   <div>
     <!-- 解释沪深300的概念 -->
     <el-card class="concept-card">
-      <h2>沪深300简介</h2>
+      <h2>中证500简介</h2>
       <p>
-        沪深300指数是由上海和深圳证券市场中选取300只规模大、流动性好的股票组成的成份股指数，
-        反映了中国A股市场的整体走势。它是国内市场最具代表性的指数之一，常用于投资业绩的基准。
+        中证500是中证指数有限公司所开发的指数中的一种，其样本空间内股票是由全部A股中剔除沪深300指数成份股及总市值排名前300名的股票后，总市值排名靠前的500只股票组成，综合反映中国A股市场中一批中小市值公司的股票价格表现。
       </p>
     </el-card>
 
@@ -33,7 +32,7 @@
 </template>
 
 <script>
-import { fetchHuShen300Data } from "@/api/tableData";
+import { fetchZh500Data } from "@/api/tableData";
 
 export default {
   data() {
@@ -52,9 +51,9 @@ export default {
       try {
         console.log("fetchData 当前页:", page);
         this.currentPage = page;
-        const response = await fetchHuShen300Data(
-          this.currentPage,
-          this.pageSize
+        const response = await fetchZh500Data(
+            this.currentPage,
+            this.pageSize
         );
         if (response) {
           this.tableData = response.items;

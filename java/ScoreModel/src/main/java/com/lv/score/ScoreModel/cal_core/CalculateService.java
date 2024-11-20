@@ -62,7 +62,8 @@ public class CalculateService implements CalculateServiceInterface {
             calResultMap.put(i.getConCode() + i.getTradeDate(), dailies);
             monthScoreList.add(calCoreService.getMonthScore(dailies));
         }
-        saveCalResult.saveDailyScoreToES(calResultMap);
-        saveCalResult.saveMonthScoreToES(monthScoreList);
+        String formatString = indexCode.substring(0, 6);
+        saveCalResult.saveDailyScoreToES(calResultMap, formatString);
+        saveCalResult.saveMonthScoreToES(monthScoreList, formatString);
     }
 }

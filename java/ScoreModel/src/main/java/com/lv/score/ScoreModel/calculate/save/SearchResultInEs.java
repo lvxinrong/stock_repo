@@ -4,26 +4,20 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
-import co.elastic.clients.elasticsearch.core.search.Hit;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.lv.score.ScoreModel.calculate.entity.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.elasticsearch.annotations.Setting;
 import org.springframework.stereotype.Component;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class SearchResultInEs {
 
-    public static final String INDEX_NAME = "month_score";
+    public static final String INDEX_NAME = "399300_month_score";
 
     @Autowired
     private ElasticsearchClient elasticsearchClient;
@@ -51,13 +45,13 @@ public class SearchResultInEs {
         return products;
     }
 
-    public PageInfo<CalculateResultMonthEsEntity> searchWithPagination(int page, int pageSize) throws IOException {
+    public PageInfo<CalculateResultMonthEsEntity> searchWithPagination(String indexName, int page, int pageSize) throws IOException {
         // 计算 from 参数
         int from = (page - 1) * pageSize;
 
         // 构建搜索请求
         SearchRequest searchRequest = SearchRequest.of(builder -> builder
-                .index(INDEX_NAME)
+                .index(indexName)
                 .from(from)
                 .size(pageSize)
                 .query(query -> query
