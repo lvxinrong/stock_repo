@@ -1,0 +1,16 @@
+/* 公共样式 */
+
+/* 链接样式：用于醒目的跳转链接 */
+.highlight-link {
+  color: #409eff; /* 使用 Element UI 主色 */
+  font-weight: bold; /* 加粗 */
+  cursor: pointer; /* 鼠标悬停时显示手型 */
+  text-decoration: underline; /* 添加下划线 */
+  padding: 2px 5px; /* 增加内边距 */
+  border-radius: 4px; /* 圆角效果 */
+  transition: background-color 0.3s; /* 悬停时动画效果 */
+}
+
+.highlight-link:hover {
+  background-color: #e6f7ff; /* 悬停时背景变浅蓝 */
+}

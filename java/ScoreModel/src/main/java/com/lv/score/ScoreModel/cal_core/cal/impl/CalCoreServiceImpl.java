@@ -37,6 +37,11 @@ public class CalCoreServiceImpl implements CalCoreService {
         calculateResultDaily.setStock_pct_chg(tradeDaily.getPctChg());
         calculateResultDaily.setIndex_pct_chg(indexBasicDaily.getPctChg());
         calculateResultDaily.setTradeDate(tradeDaily.getTradeDate());
+        calculateResultDaily.setOpen(tradeDaily.getOpen());
+        calculateResultDaily.setClose(tradeDaily.getClose());
+        calculateResultDaily.setHigh(tradeDaily.getHigh());
+        calculateResultDaily.setLow(tradeDaily.getLow());
+        calculateResultDaily.setPreClose(tradeDaily.getPreClose());
         // 核心算法，这里可以抽取出去，根据模式来选择，目前先这么写
         Double score = tradeDaily.getPctChg() - indexBasicDaily.getPctChg();
         calculateResultDaily.setScore(score);
@@ -63,6 +68,7 @@ public class CalCoreServiceImpl implements CalCoreService {
         calculateResultMonth.setIndex_code_name(getIndexBasicName(calculateResultDailyList.get(0).getIndex_ts_code()));
         calculateResultMonth.setScore(calculateResultDailyList.stream().mapToDouble(CalculateResultDaily::getScore).sum());
         calculateResultMonth.setYieldRate(getStockYield(calculateResultDailyList));
+        calculateResultMonth.setTradeDateYieldRate(getTradeDateYieldRate(calculateResultDailyList));
         return calculateResultMonth;
     }
 
@@ -86,6 +92,16 @@ public class CalCoreServiceImpl implements CalCoreService {
         Double value = calculateStockYieldRate.getStockYieldRateWithStartTime(calculateResultDailyList.get(0).getTs_code(), nextDate, null);
         return String.format("%.2f", value) + "%";
 
+    }
+
+    private String getTradeDateYieldRate(List<CalculateResultDaily> calculateResultDailyList) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        CalculateResultDaily startData = calculateResultDailyList.stream().min(
+                Comparator.comparing(e -> LocalDate.parse(e.getTradeDate(), formatter))).get();
+        CalculateResultDaily endData = calculateResultDailyList.stream().max(
+                Comparator.comparing(e -> LocalDate.parse(e.getTradeDate(), formatter))).get();
+        Double yieldRate = (endData.getClose() - startData.getPreClose()) / startData.getPreClose() * 100d;
+        return String.format("%.2f", yieldRate) + "%";
     }
 
 }

@@ -11,10 +11,20 @@
     <!-- 表格部分 -->
     <el-card class="table-card">
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="ts_code" label="股票代码" width="80"></el-table-column>
+        <el-table-column label="股票代码">
+          <template #default="{ row }">
+            <span
+                class="highlight-link"
+                @click="navigateToDetail(row.ts_code)"
+            >
+              {{ row.ts_code }}
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column prop="stock_name" label="股票名称"></el-table-column>
         <el-table-column prop="tradeDateMonth" label="交易日期"></el-table-column>
         <el-table-column prop="score" label="股票得分"></el-table-column>
+        <el-table-column prop="yieldRate" label="本月收益率(本月1号到最新数据的收益率)"></el-table-column>
       </el-table>
 
       <!-- 分页 -->
@@ -32,7 +42,8 @@
 </template>
 
 <script>
-import { fetchZh500Data } from "@/api/tableData";
+import { fetchZh1000Data } from "@/api/tableData";
+import {goToDetail} from "@/common_js/navigation.js";
 
 export default {
   data() {
@@ -51,7 +62,7 @@ export default {
       try {
         console.log("fetchData 当前页:", page);
         this.currentPage = page;
-        const response = await fetchZh500Data(
+        const response = await fetchZh1000Data(
             this.currentPage,
             this.pageSize
         );
@@ -67,6 +78,9 @@ export default {
       console.log("每页条数更新为:", newSize);
       this.pageSize = newSize;
       this.fetchData(1); // 重置到第一页
+    },
+    navigateToDetail(ts_code) {
+      goToDetail(this.$router, ts_code)
     },
   },
 };

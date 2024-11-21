@@ -50,3 +50,9 @@ export const fetchShuangChuang50Data = (page, pageSize) => {
         params: { page, pageSize },
     });
 };
+
+export const fetchDetailData = (ts_code) => {
+    return apiClient.get('/tradeDaily/getStockTradeList', {
+        params: { ts_code },
+    });
+}

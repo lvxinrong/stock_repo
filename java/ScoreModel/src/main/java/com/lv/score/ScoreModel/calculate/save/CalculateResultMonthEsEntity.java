@@ -36,6 +36,9 @@ public class CalculateResultMonthEsEntity {
     @Field(type= FieldType.Text, name = "yieldRate")
     private String yieldRate;
 
+    @Field(type= FieldType.Text, name = "tradeDateYieldRate")
+    private String tradeDateYieldRate;
+
 
     public CalculateResultMonthEsEntity(CalculateResultMonth calculateResultMonth) {
         this.ts_code = calculateResultMonth.getTs_code();
@@ -45,5 +48,6 @@ public class CalculateResultMonthEsEntity {
         this.index_code = calculateResultMonth.getIndex_code();
         this.index_code_name = calculateResultMonth.getIndex_code_name();
         this.yieldRate = calculateResultMonth.getYieldRate();
+        this.tradeDateYieldRate = calculateResultMonth.getTradeDateYieldRate();
     }
 }

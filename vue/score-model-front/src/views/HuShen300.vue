@@ -11,14 +11,32 @@
 
     <!-- 表格部分 -->
     <el-card class="table-card">
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="ts_code" label="股票代码" width="80"></el-table-column>
+      <el-table
+          :data="tableData"
+          style="width: 100%"
+          stripe
+          highlight-current-row
+          :row-class-name="tableRowClassName"
+      >
+        <el-table-column label="股票代码">
+          <template #default="{ row }">
+            <span
+                class="highlight-link"
+                @click="navigateToDetail(row.ts_code)"
+            >
+              {{ row.ts_code }}
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column prop="stock_name" label="股票名称"></el-table-column>
         <el-table-column prop="tradeDateMonth" label="交易日期"></el-table-column>
         <el-table-column prop="score" label="股票得分"></el-table-column>
+        <el-table-column prop="tradeDateYieldRate" label="计算月涨幅"></el-table-column>
+        <el-table-column prop="yieldRate" label="本月收益率(本月1号到最新数据的收益率)"></el-table-column>
       </el-table>
 
       <!-- 分页 -->
+      <div class="pagination-container">
       <el-pagination
           background
           layout="sizes, prev, pager, next"
@@ -28,12 +46,14 @@
           @current-change="fetchData"
           @size-change="handleSizeChange"
       />
+      </div>
     </el-card>
   </div>
 </template>
 
 <script>
 import { fetchHuShen300Data } from "@/api/tableData";
+import { goToDetail } from "@/common_js/navigation.js"; // 引入公共方法
 
 export default {
   data() {
@@ -69,6 +89,12 @@ export default {
       this.pageSize = newSize;
       this.fetchData(1); // 重置到第一页
     },
+    navigateToDetail(ts_code) {
+      goToDetail(this.$router, ts_code)
+    },
+    tableRowClassName({ rowIndex }) {
+      return rowIndex % 2 === 0 ? "table-row-light" : "table-row-dark";
+    },
   },
 };
 </script>
@@ -80,5 +106,34 @@ export default {
 
 .table-card {
   padding: 20px;
+}
+
+/* 表格样式增强 */
+.el-table th {
+  background-color: #f5f7fa; /* 表头背景色 */
+  color: #606266; /* 表头文字颜色 */
+  font-weight: bold; /* 表头加粗 */
+  text-align: center; /* 表头文字居中 */
+}
+.el-table td {
+  text-align: left; /* 单元格默认左对齐 */
+}
+
+/* 分页栏间距调整 */
+.pagination-container {
+  margin-top: 20px; /* 调整与表格的距离 */
+  text-align: center; /* 居中分页栏 */
+}
+
+/* 交替行颜色：增强对比度 */
+:deep(.table-row-light) {
+  background-color: #ffffff !important; /* 浅白色 */
+}
+:deep(.table-row-dark) {
+  background-color: #f2f2f2 !important; /* 更深的灰色 */
+}
+/* 当前行高亮效果 */
+:deep(.el-table__row:hover) {
+  background-color: #d0ebff !important; /* 悬停行高亮，浅蓝色 */
 }
 </style>
