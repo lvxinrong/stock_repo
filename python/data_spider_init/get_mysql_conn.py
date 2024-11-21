@@ -4,7 +4,7 @@ from mysql.connector import Error
 
 def get_mysql_conn():
     try:
-        conn = mysql.connector.connect(host='localhost',
+        conn = mysql.connector.connect(host='192.168.3.8',
                                        database='good_stock',
                                        user='root',
                                        password='123456')

@@ -1,6 +1,7 @@
 package com.lv.score.ScoreModel.cal_core.cal.impl;
 
 import com.lv.score.ScoreModel.cal_core.cal.CalCoreService;
+import com.lv.score.ScoreModel.cal_core.yield_rate.CalculateStockYieldRate;
 import com.lv.score.ScoreModel.calculate.entity.CalculateResultDaily;
 import com.lv.score.ScoreModel.calculate.entity.CalculateResultMonth;
 import com.lv.score.ScoreModel.entity.IndexBasicDaily;
@@ -11,9 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -24,6 +25,9 @@ public class CalCoreServiceImpl implements CalCoreService {
 
     @Autowired
     IIndexBasicService iIndexBasicService;
+
+    @Autowired
+    CalculateStockYieldRate calculateStockYieldRate;
 
     @Override
     public CalculateResultDaily calStockScoreWithIndex(IndexBasicDaily indexBasicDaily, TradeDaily tradeDaily) {
@@ -58,6 +62,7 @@ public class CalCoreServiceImpl implements CalCoreService {
         calculateResultMonth.setIndex_code(calculateResultDailyList.get(0).getIndex_ts_code());
         calculateResultMonth.setIndex_code_name(getIndexBasicName(calculateResultDailyList.get(0).getIndex_ts_code()));
         calculateResultMonth.setScore(calculateResultDailyList.stream().mapToDouble(CalculateResultDaily::getScore).sum());
+        calculateResultMonth.setYieldRate(getStockYield(calculateResultDailyList));
         return calculateResultMonth;
     }
 
@@ -68,4 +73,19 @@ public class CalCoreServiceImpl implements CalCoreService {
     private String getIndexBasicName(String indexCode) {
         return iIndexBasicService.selectIndexNameByCode(indexCode);
     }
+
+    private String getStockYield(List<CalculateResultDaily> calculateResultDailyList) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        // 使用 Stream API 找到最大日期并计算其下一天
+        String nextDate = calculateResultDailyList.stream()
+                .map(date -> LocalDate.parse(date.getTradeDate(), formatter)) // 将字符串转换为 LocalDate
+                .max(LocalDate::compareTo)                    // 找到最大日期
+                .map(max -> max.plusDays(1))                  // 计算下一天
+                .map(next -> next.format(formatter))          // 格式化回字符串
+                .orElse(null);
+        Double value = calculateStockYieldRate.getStockYieldRateWithStartTime(calculateResultDailyList.get(0).getTs_code(), nextDate, null);
+        return String.format("%.2f", value) + "%";
+
+    }
+
 }

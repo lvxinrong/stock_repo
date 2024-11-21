@@ -19,3 +19,20 @@ def generate_dates_for_month(year, month):
         current_day += timedelta(days=1)
 
     return dates
+
+
+def get_date_range(start_date_str):
+    # 将字符串格式的日期转换为 datetime 对象
+    start_date = datetime.strptime(start_date_str, "%Y%m%d")
+
+    # 获取当前最新日期
+    today = datetime.today()
+
+    # 初始化日期范围列表
+    date_list = []
+
+    # 循环生成每一天的日期
+    while start_date <= today:
+        date_list.append(start_date.strftime("%Y%m%d"))
+        start_date += timedelta(days=1)
+    return date_list

@@ -17,4 +17,6 @@ public class CalculateResultMonth {
     private String tradeDateMonth;
     // 分数
     private Double score;
+    // 本月收益率
+    private String yieldRate;
 }

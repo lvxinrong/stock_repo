@@ -32,6 +32,10 @@ public class CalculateResultMonthEsEntity {
     @Field(type= FieldType.Double, name = "score")
     private Double score;
 
+    // 本月收益率
+    @Field(type= FieldType.Text, name = "yieldRate")
+    private String yieldRate;
+
 
     public CalculateResultMonthEsEntity(CalculateResultMonth calculateResultMonth) {
         this.ts_code = calculateResultMonth.getTs_code();
@@ -40,5 +44,6 @@ public class CalculateResultMonthEsEntity {
         this.score = calculateResultMonth.getScore();
         this.index_code = calculateResultMonth.getIndex_code();
         this.index_code_name = calculateResultMonth.getIndex_code_name();
+        this.yieldRate = calculateResultMonth.getYieldRate();
     }
 }

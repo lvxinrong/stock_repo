@@ -27,4 +27,18 @@ public class TradeDailyServiceImpl extends ServiceImpl<TradeDailyMapper, TradeDa
         queryWrapper.like("trade_date", tradeDate + "%");
         return list(queryWrapper);
     }
+
+    @Override
+    public List<TradeDaily> getTradeDailyByListDate(String tsCode, List<String> tradeDateList) {
+        QueryWrapper<TradeDaily> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("ts_code", tsCode);
+        if (tradeDateList.size() == 1) {
+            queryWrapper.ge("trade_date", tradeDateList.get(0));
+        } else {
+            queryWrapper.in("trade_date", tradeDateList);
+        }
+        return list(queryWrapper);
+    }
+
+
 }

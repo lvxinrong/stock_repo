@@ -10,3 +10,5 @@ def get_tushare_api_pro():
         return pro
     except Exception as e:
         print(e)
+
+print(get_tushare_api_pro())

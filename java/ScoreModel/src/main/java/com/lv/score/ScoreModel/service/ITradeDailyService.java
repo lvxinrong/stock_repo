@@ -17,4 +17,6 @@ public interface ITradeDailyService extends IService<TradeDaily> {
 
     List<TradeDaily> getTradeDailyDataByTsCodeAndTradeDate(String tsCode, String tradeDate);
 
+    List<TradeDaily> getTradeDailyByListDate(String tsCode, List<String> tradeDateList);
+
 }
