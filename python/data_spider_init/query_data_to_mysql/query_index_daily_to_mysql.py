@@ -10,7 +10,7 @@ ts_code_index = ['399300.SZ']
 table_name = 'index_basic_daily'
 
 year = 2024
-month = 10
+month = 11
 dates = generate_dates_for_month(year, month)
 # 连接tushare
 pro = get_tushare_api_pro()

@@ -9,6 +9,19 @@
       </p>
     </el-card>
 
+    <!-- 过滤器容器 -->
+    <div class="filter-container">
+      <span class="filter-label">选择日期：</span>
+      <el-select v-model="selectedMonth" placeholder="请选择" @change="handleMonthChange" class="filter-select">
+        <el-option
+            v-for="item in monthOptions"
+            :key="item"
+            :label="item"
+            :value="item"
+        ></el-option>
+      </el-select>
+    </div>
+
     <!-- 表格部分 -->
     <el-card class="table-card">
       <el-table
@@ -54,10 +67,14 @@
 <script>
 import { fetchHuShen300Data } from "@/api/tableData";
 import { goToDetail } from "@/common_js/navigation.js"; // 引入公共方法
+import { defaultMonthOptions } from "@/api/dateUtils"; // 引入公共模块
+
 
 export default {
   data() {
     return {
+      monthOptions: defaultMonthOptions, // 下拉框选项
+      selectedMonth: "", // 当前选择的年月
       tableData: [], // 表格数据
       total: 0, // 总条数
       pageSize: 10, // 每页条数（默认值）
@@ -70,11 +87,11 @@ export default {
   methods: {
     async fetchData(page = 1) { // 默认值为 1，防止未传参时报错
       try {
-        console.log("fetchData 当前页:", page);
         this.currentPage = page;
         const response = await fetchHuShen300Data(
           this.currentPage,
-          this.pageSize
+          this.pageSize,
+          this.selectedMonth, // 添加年月参数
         );
         if (response) {
           this.tableData = response.items;
@@ -94,6 +111,9 @@ export default {
     },
     tableRowClassName({ rowIndex }) {
       return rowIndex % 2 === 0 ? "table-row-light" : "table-row-dark";
+    },
+    handleMonthChange() {
+      this.fetchData(1); // 重新加载数据
     },
   },
 };
@@ -124,6 +144,24 @@ export default {
   margin-top: 20px; /* 调整与表格的距离 */
   text-align: center; /* 居中分页栏 */
 }
+
+/* 过滤器样式 */
+.filter-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-label {
+  font-size: 14px;
+  color: #606266;
+  margin-right: 10px; /* 文字与下拉框之间的间距 */
+}
+
+.filter-select {
+  width: 200px; /* 限制下拉框宽度 */
+}
+
 
 /* 交替行颜色：增强对比度 */
 :deep(.table-row-light) {

@@ -5,8 +5,6 @@ from datetime import datetime, timedelta
 import pandas as pd
 from date_format_utils import get_date_range
 
-
-
 def get_latest_trade_date():
     # 创建数据库连接
     cnx = get_mysql_conn()

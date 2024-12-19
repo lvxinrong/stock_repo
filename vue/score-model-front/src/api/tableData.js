@@ -1,38 +1,38 @@
 import apiClient from './index';
 
 // 获取沪深300数据
-export const fetchHuShen300Data = (page, pageSize) => {
+export const fetchHuShen300Data = (page, pageSize, stockMonth) => {
     console.log(page, pageSize)
     return apiClient.get('/hs300Stock/score', {
-        params: { page, pageSize },
+        params: { page, pageSize, stockMonth},
     });
 };
 
-export const fetchZh100Data = (page, pageSize) => {
+export const fetchZh100Data = (page, pageSize, stockMonth) => {
     console.log(page, pageSize)
     return apiClient.get('/zh100Stock/score', {
-        params: { page, pageSize },
+        params: { page, pageSize, stockMonth},
     });
 };
 
-export const fetchZh500Data = (page, pageSize) => {
+export const fetchZh500Data = (page, pageSize, stockMonth) => {
     console.log(page, pageSize)
     return apiClient.get('/zh500Stock/score', {
-        params: { page, pageSize },
+        params: { page, pageSize, stockMonth},
     });
 };
 
-export const fetchZh800Data = (page, pageSize) => {
+export const fetchZh800Data = (page, pageSize, stockMonth) => {
     console.log(page, pageSize)
     return apiClient.get('/zh800Stock/score', {
-        params: { page, pageSize },
+        params: { page, pageSize, stockMonth},
     });
 };
 
-export const fetchZh1000Data = (page, pageSize) => {
+export const fetchZh1000Data = (page, pageSize, stockMonth) => {
     console.log(page, pageSize)
     return apiClient.get('/zh1000Stock/score', {
-        params: { page, pageSize },
+        params: { page, pageSize, stockMonth},
     });
 };
 

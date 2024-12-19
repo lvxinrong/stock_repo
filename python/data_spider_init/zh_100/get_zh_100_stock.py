@@ -36,4 +36,3 @@ cnx.commit()
 # 关闭游标和数据库连接
 cursor.close()
 cnx.close()
-query_index_daily(index_code)

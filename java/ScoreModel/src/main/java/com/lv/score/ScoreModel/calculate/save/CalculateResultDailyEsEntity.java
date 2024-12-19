@@ -39,6 +39,6 @@ public class CalculateResultDailyEsEntity {
         score = calculateResultDaily.getScore();
         stock_pct_chg = calculateResultDaily.getStock_pct_chg();
         index_pct_chg = calculateResultDaily.getIndex_pct_chg();
-        id = calculateResultDaily.getTs_code() + " " + calculateResultDaily.getTradeDate();
+        id = calculateResultDaily.getTs_code() + "_" + calculateResultDaily.getTradeDate();
     }
 }

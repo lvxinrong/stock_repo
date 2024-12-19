@@ -15,6 +15,7 @@ def query_index_daily(index_code):
     # 将DataFrame写入数据库
     cursor = cnx.cursor()
     for date in dates:
+        print(date + " " + index_code)
         df = pro.index_daily(ts_code=index_code, trade_date=date)
         # 转换为DataFrame
         ini_df = pd.DataFrame(df)

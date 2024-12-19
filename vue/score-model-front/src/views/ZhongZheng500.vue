@@ -8,9 +8,28 @@
       </p>
     </el-card>
 
+    <!-- 过滤器容器 -->
+    <div class="filter-container">
+      <span class="filter-label">选择日期：</span>
+      <el-select v-model="selectedMonth" placeholder="请选择" @change="handleMonthChange" class="filter-select">
+        <el-option
+            v-for="item in monthOptions"
+            :key="item"
+            :label="item"
+            :value="item"
+        ></el-option>
+      </el-select>
+    </div>
+
     <!-- 表格部分 -->
     <el-card class="table-card">
-      <el-table :data="tableData" style="width: 100%">
+      <el-table
+          :data="tableData"
+          style="width: 100%"
+          stripe
+          highlight-current-row
+          :row-class-name="tableRowClassName"
+      >
         <el-table-column label="股票代码">
           <template #default="{ row }">
             <span
@@ -49,6 +68,8 @@ import { goToDetail } from "@/common_js/navigation.js"; // 引入公共方法
 export default {
   data() {
     return {
+      monthOptions: ["202411", "202410"], // 下拉框选项
+      selectedMonth: "", // 当前选择的年月
       tableData: [], // 表格数据
       total: 0, // 总条数
       pageSize: 10, // 每页条数（默认值）
@@ -65,7 +86,8 @@ export default {
         this.currentPage = page;
         const response = await fetchZh500Data(
             this.currentPage,
-            this.pageSize
+            this.pageSize,
+            this.selectedMonth
         );
         if (response) {
           this.tableData = response.items;
@@ -83,6 +105,12 @@ export default {
     navigateToDetail(ts_code) {
       goToDetail(this.$router, ts_code)
     },
+    handleMonthChange() {
+      this.fetchData(1); // 重新加载数据
+    },
+    tableRowClassName({ rowIndex }) {
+      return rowIndex % 2 === 0 ? "table-row-light" : "table-row-dark";
+    },
   },
 };
 </script>
@@ -94,5 +122,52 @@ export default {
 
 .table-card {
   padding: 20px;
+}
+
+/* 表格样式增强 */
+.el-table th {
+  background-color: #f5f7fa; /* 表头背景色 */
+  color: #606266; /* 表头文字颜色 */
+  font-weight: bold; /* 表头加粗 */
+  text-align: center; /* 表头文字居中 */
+}
+.el-table td {
+  text-align: left; /* 单元格默认左对齐 */
+}
+
+/* 分页栏间距调整 */
+.pagination-container {
+  margin-top: 20px; /* 调整与表格的距离 */
+  text-align: center; /* 居中分页栏 */
+}
+
+/* 过滤器样式 */
+.filter-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-label {
+  font-size: 14px;
+  color: #606266;
+  margin-right: 10px; /* 文字与下拉框之间的间距 */
+}
+
+.filter-select {
+  width: 200px; /* 限制下拉框宽度 */
+}
+
+
+/* 交替行颜色：增强对比度 */
+:deep(.table-row-light) {
+  background-color: #ffffff !important; /* 浅白色 */
+}
+:deep(.table-row-dark) {
+  background-color: #f2f2f2 !important; /* 更深的灰色 */
+}
+/* 当前行高亮效果 */
+:deep(.el-table__row:hover) {
+  background-color: #d0ebff !important; /* 悬停行高亮，浅蓝色 */
 }
 </style>

@@ -5,7 +5,7 @@ from get_tusahre_api_pro import get_tushare_api_pro
 
 # 使用示例
 year = 2024
-month = 10
+month = 11
 dates = generate_dates_for_month(year, month)
 # 连接tushare
 pro = get_tushare_api_pro()

@@ -4,6 +4,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import com.lv.score.ScoreModel.calculate.save.CalculateResultMonthEsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,6 +17,9 @@ public class SaveMontScoreToEs {
 
     @Autowired
     private ElasticsearchClient elasticsearchClient;
+
+    @Value("${stock.stock_month}")
+    private String stockMonth;
 
     public void bulkSave(List<CalculateResultMonthEsEntity> products) throws IOException {
         BulkRequest.Builder br = new BulkRequest.Builder();
@@ -31,7 +35,7 @@ public class SaveMontScoreToEs {
         BulkRequest.Builder br = new BulkRequest.Builder();
         products.forEach(product->br.operations(operation->
                 operation.index(i->i
-                        .index(indexCode + "_" + PRODUCTS)
+                        .index(indexCode + "_" + PRODUCTS + "_" + stockMonth)
                         .id(product.getTs_code())
                         .document(product))));
         elasticsearchClient.bulk(br.build());
