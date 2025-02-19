@@ -7,7 +7,8 @@ def get_mysql_conn():
         conn = mysql.connector.connect(host='192.168.3.8',
                                        database='good_stock',
                                        user='root',
-                                       password='123456')
+                                       password='123456',
+                                       connect_timeout=600)
         if conn.is_connected():
             print('Connected to MySQL database')
             return conn

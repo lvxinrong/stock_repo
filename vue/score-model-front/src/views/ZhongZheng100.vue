@@ -44,6 +44,7 @@
         <el-table-column prop="stock_name" label="股票名称"></el-table-column>
         <el-table-column prop="tradeDateMonth" label="交易日期"></el-table-column>
         <el-table-column prop="score" label="股票得分"></el-table-column>
+        <el-table-column prop="tradeDateYieldRate" label="计算月涨幅"></el-table-column>
         <el-table-column prop="yieldRate" label="本月收益率(本月1号到最新数据的收益率)"></el-table-column>
       </el-table>
 
@@ -65,12 +66,14 @@
 
 <script>
 import { fetchZh100Data } from "@/api/tableData";
-import { goToDetail } from "@/common_js/navigation.js"; // 引入公共方法
+import { goToDetail } from "@/common_js/navigation.js";
+import {defaultMonthOptions} from "@/api/dateUtils.js"; // 引入公共方法
+
 export default {
   data() {
     return {
-      monthOptions: ["202411", "202410"], // 下拉框选项
-      selectedMonth: "", // 当前选择的年月
+      monthOptions: defaultMonthOptions, // 下拉框选项
+      selectedMonth: defaultMonthOptions[0], // 当前选择的年月
       tableData: [], // 表格数据
       total: 0, // 总条数
       pageSize: 10, // 每页条数（默认值）

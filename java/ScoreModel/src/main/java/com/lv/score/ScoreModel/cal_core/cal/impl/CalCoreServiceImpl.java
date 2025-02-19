@@ -5,6 +5,7 @@ import com.lv.score.ScoreModel.cal_core.yield_rate.CalculateStockYieldRate;
 import com.lv.score.ScoreModel.calculate.entity.CalculateResultDaily;
 import com.lv.score.ScoreModel.calculate.entity.CalculateResultMonth;
 import com.lv.score.ScoreModel.entity.IndexBasicDaily;
+import com.lv.score.ScoreModel.entity.StockBasic;
 import com.lv.score.ScoreModel.entity.TradeDaily;
 import com.lv.score.ScoreModel.service.IIndexBasicService;
 import com.lv.score.ScoreModel.service.IStockBasicService;
@@ -73,7 +74,12 @@ public class CalCoreServiceImpl implements CalCoreService {
     }
 
     private String getStockName(String tsCode) {
-        return iStockBasicService.queryByTsCode(tsCode).getName();
+        StockBasic stockBasic = iStockBasicService.queryByTsCode(tsCode);
+        if (stockBasic == null) {
+            log.error("无法找到tsCode对应的name. tsCode: {}", tsCode);
+            return tsCode;
+        }
+        return stockBasic.getName();
     }
 
     private String getIndexBasicName(String indexCode) {

@@ -1,8 +1,6 @@
 import pandas as pd
-import tushare as ts
 from get_mysql_conn import get_mysql_conn
 from get_tusahre_api_pro import get_tushare_api_pro
-from query_index_daily_to_mysql import query_index_daily
 
 # 中证 100
 index_code = "000903.SH"

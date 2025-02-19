@@ -74,7 +74,7 @@ export default {
   data() {
     return {
       monthOptions: defaultMonthOptions, // 下拉框选项
-      selectedMonth: "", // 当前选择的年月
+      selectedMonth: defaultMonthOptions[0], // 当前选择的年月
       tableData: [], // 表格数据
       total: 0, // 总条数
       pageSize: 10, // 每页条数（默认值）
