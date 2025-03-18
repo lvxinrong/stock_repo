@@ -23,13 +23,13 @@ public class MySQLGeneratorTest extends BaseGeneratorTest {
      * 数据源配置
      */
     private static final DataSourceConfig DATA_SOURCE_CONFIG = new DataSourceConfig
-            .Builder("jdbc:mysql://127.0.0.1:3306/good_stock?useSSL=false&serverTimezone=Asia/Shanghai", "root", "123456")
+            .Builder("jdbc:mysql://192.168.3.73:3306/good_stock?useSSL=false&serverTimezone=Asia/Shanghai", "root", "123456")
             .schema("good_stock")
             .build();
 
     @Test
     public void fastAutoGenerator() {
-        FastAutoGenerator.create("jdbc:mysql://127.0.0.1:3306/good_stock?useSSL=false&serverTimezone=Asia/Shanghai", "root", "123456")
+        FastAutoGenerator.create("jdbc:mysql://192.168.3.73:3306/good_stock?useSSL=false&serverTimezone=Asia/Shanghai", "root", "123456")
                 .globalConfig(builder -> builder
                         .author("lvxinrong")
                         .outputDir(Paths.get(System.getProperty("user.dir")) + "/src/main/java")
@@ -44,7 +44,7 @@ public class MySQLGeneratorTest extends BaseGeneratorTest {
                         .xml("mapper.xml")
                         .pathInfo(Collections.singletonMap(OutputFile.xml, "H:\\stock\\stock_repo\\java\\ScoreModel\\src\\main\\resources\\xml"))
                 )
-                .strategyConfig(builder -> builder.addInclude("zh_100_stock","zh_500_stock", "zh_800_stock", "zh_1000_stock")
+                .strategyConfig(builder -> builder.addInclude("stock_cyq_perf_day")
                         .entityBuilder()
                         .enableLombok()
                 )

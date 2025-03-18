@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 from date_format_utils import get_date_range
 
+
 def get_latest_trade_date():
     # 创建数据库连接
     cnx = get_mysql_conn()
@@ -66,4 +67,5 @@ def update_trade_daily_start_with_date(date_string):
     cnx.close()
 
 
-update_trade_daily_start_with_date(get_next_date_string(get_latest_trade_date()))
+if __name__ == '__main__':
+    update_trade_daily_start_with_date(get_next_date_string(get_latest_trade_date()))

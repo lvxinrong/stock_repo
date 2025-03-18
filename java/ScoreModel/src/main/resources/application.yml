@@ -4,10 +4,15 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
-    url: jdbc:mysql://192.168.3.8:3306/good_stock?useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://192.168.3.73:3306/good_stock?useSSL=false&serverTimezone=Asia/Shanghai
 
 mybatis-plus:
   mapper-locations: classpath:/xml/**.xml
 
 stock:
   stock_month: 202501
+
+logging:
+  level:
+    #打印sql日志，不打印查询结果，推荐
+    cloud.cloudwings.hwq.first.modules: debug

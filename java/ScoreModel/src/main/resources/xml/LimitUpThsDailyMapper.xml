@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lv.score.ScoreModel.mapper.LimitUpThsDailyMapper">
+
+    <select id="getLatestDay" resultType="java.lang.String">
+        select max(trade_date) from limit_up_ths_daily
+    </select>
+
+    <select id="getLast60UpDate" resultType="com.lv.score.ScoreModel.entity.LimitUpCountEntity">
+        SELECT DATE(trade_date) AS tradeDate,
+            count(1)         as countSize
+        FROM limit_up_ths_daily
+        WHERE trade_date >= DATE_SUB(CURDATE(), INTERVAL 60 DAY)
+        GROUP BY tradeDate
+        ORDER BY tradeDate ASC;
+    </select>
+
+</mapper>

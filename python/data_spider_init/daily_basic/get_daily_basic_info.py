@@ -3,6 +3,7 @@ from get_mysql_conn import get_mysql_conn
 from get_tusahre_api_pro import get_tushare_api_pro
 from date_format_utils import generate_date_range
 
+
 def get_daily_basic_info(trade_date):
     pro = get_tushare_api_pro()
     data = pro.daily_basic(trade_date=trade_date)
@@ -17,9 +18,6 @@ def get_daily_basic_info(trade_date):
     cursor = cnx.cursor()
     table_name = 'daily_basic_info'
 
-    # 清空历史数据
-    truncate_table_sql = "truncate table {}".format(table_name)
-    cursor.execute(truncate_table_sql)
     # 获取DataFrame的列名
     columns = df.columns.tolist()
     # 批量插入数据
@@ -37,9 +35,12 @@ def get_daily_basic_info(trade_date):
     cursor.close()
     cnx.close()
 
+
 def get_daily_basic_info_by_month(startYear, startMonth, endYear, endMonth):
     dates = generate_date_range(startYear, startMonth, endYear, endMonth);
     for tradeDate in dates:
         get_daily_basic_info(tradeDate)
 
-get_daily_basic_info_by_month(2024,9,2025,2)
+
+if __name__ == '__main__':
+    get_daily_basic_info_by_month(2024, 9, 2025, 3)

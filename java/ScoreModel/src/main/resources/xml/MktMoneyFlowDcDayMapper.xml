@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lv.score.ScoreModel.mapper.MktMoneyFlowDcDayMapper">
+
+
+    <select id="getLast90DayDate" resultType="com.lv.score.ScoreModel.entity.MktMoneyFlowDcDay">
+        SELECT *
+        FROM mkt_money_flow_dc_day
+        WHERE trade_date >= DATE_SUB(CURDATE(), INTERVAL 90 DAY)
+        ORDER BY trade_date DESC;
+    </select>
+</mapper>

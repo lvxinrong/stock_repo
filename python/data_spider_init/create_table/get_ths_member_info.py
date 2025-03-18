@@ -2,6 +2,7 @@ import pandas as pd
 from get_mysql_conn import get_mysql_conn
 from get_tusahre_api_pro import get_tushare_api_pro
 
+
 # 定义获取成分股数据的函数
 def get_member_data(ts_code, pro):
     print('Getting member data for {}'.format(ts_code))
@@ -51,4 +52,3 @@ def process_member_data(ts_code):
         get_member_data(ts_code, pro)
     except Exception as e:
         print(f"Error processing {ts_code}: {e}")
-

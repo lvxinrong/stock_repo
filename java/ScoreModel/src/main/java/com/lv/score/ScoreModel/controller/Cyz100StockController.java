@@ -2,6 +2,7 @@ package com.lv.score.ScoreModel.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Controller;
  * @author lvxinrong
  * @since 2024-11-19
  */
-@Controller
+@RestController
 @RequestMapping("/cyz100Stock")
 public class Cyz100StockController {
 

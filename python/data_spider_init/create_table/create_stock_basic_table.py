@@ -1,55 +1,53 @@
 import pandas as pd
 import tushare as ts
 from get_mysql_conn import get_mysql_conn
+from get_tusahre_api_pro import get_tushare_api_pro
 import pandas as pa
 
-cnx = get_mysql_conn()
 
-# 连接tushare
-ts.set_token('dfb6e9f4f9a3db86c59a3a0f680a9bdc46ed1b5adbf1e354c7faa761')
-pro = ts.pro_api()
+def update_stock_basic_all():
+    # 连接tushare
+    pro = get_tushare_api_pro()
 
-# 获取股票列表
-data = pro.query('stock_basic', exchange='', list_status='L',
-                 fields='ts_code,symbol,name,area,industry,fullname,enname,cnspell,market,exchange,curr_type,'
-                        'list_status,list_date,delist_date,is_hs')
-# 转换为DataFrame
-ini_df = pd.DataFrame(data)
+    # 获取股票列表
+    data = pro.query('stock_basic', exchange='', list_status='L',
+                     fields='ts_code,symbol,name,area,industry,fullname,enname,cnspell,market,exchange,curr_type,'
+                            'list_status,list_date,delist_date,is_hs')
+    # 转换为DataFrame
+    ini_df = pd.DataFrame(data)
 
-df = ini_df.astype(object).where(pd.notnull(ini_df), None)
+    df = ini_df.astype(object).where(pd.notnull(ini_df), None)
 
-cnx = get_mysql_conn()
-# 将DataFrame写入数据库
-cursor = cnx.cursor()
-table_name = 'stock_basic'
+    cnx = get_mysql_conn()
+    # 将DataFrame写入数据库
+    cursor = cnx.cursor()
+    table_name = 'stock_basic'
 
-# 过滤掉不需要插入的字段
-filtered_columns = [col for col in df.columns if col != 'email']
-df_filtered = df[filtered_columns]
+    # 过滤掉不需要插入的字段
+    filtered_columns = [col for col in df.columns if col != 'email']
+    df_filtered = df[filtered_columns]
 
-# 获取DataFrame的列名
-columns = df_filtered.columns.tolist()
+    # 获取DataFrame的列名
+    columns = df_filtered.columns.tolist()
+    # 清空历史数据
+    truncate_table_sql = "truncate table {}".format(table_name)
+    cursor.execute(truncate_table_sql)
 
-# 创建表格
-create_table_query = """
-CREATE TABLE IF NOT EXISTS {} (
-  {}
-);
-""".format(table_name, ',\n  '.join(['{} VARCHAR(100)'.format(col) for col in columns]))
-cursor.execute(create_table_query)
+    # 批量插入数据
+    insert_query = "INSERT INTO {} ({}) VALUES ({})".format(
+        table_name, ', '.join(columns), ', '.join(['%s'] * len(columns))
+    )
+    data_tuples = [tuple(row) for row in df_filtered[columns].values]
 
-# 批量插入数据
-insert_query = "INSERT INTO {} ({}) VALUES ({})".format(
-    table_name, ', '.join(columns), ', '.join(['%s'] * len(columns))
-)
-data_tuples = [tuple(row) for row in df_filtered[columns].values]
+    cursor.executemany(insert_query, data_tuples)
 
-cursor.executemany(insert_query, data_tuples)
+    # 提交事务
+    cnx.commit()
 
-# 提交事务
-cnx.commit()
+    # 关闭游标和数据库连接
+    cursor.close()
+    cnx.close()
 
-# 关闭游标和数据库连接
-cursor.close()
-cnx.close()
 
+if __name__ == '__main__':
+    update_stock_basic_all()

@@ -3,6 +3,7 @@ from date_format_utils import generate_dates_for_month
 from get_mysql_conn import get_mysql_conn
 from get_tusahre_api_pro import get_tushare_api_pro
 
+
 # # 使用示例
 # year = 2024
 # month = 11
@@ -99,9 +100,10 @@ def insert_trade_data(year, month):
 
 # 使用示例
 # insert_trade_data(2024, 9)
-insert_trade_data(2024, 10)
-insert_trade_data(2024, 11)
-insert_trade_data(2024, 12)
-insert_trade_data(2025, 1)
-insert_trade_data(2025, 2)
-
+if __name__ == '__main__':
+    # insert_trade_data(2024, 10)
+    # insert_trade_data(2024, 11)
+    # insert_trade_data(2024, 12)
+    # insert_trade_data(2025, 1)
+    # insert_trade_data(2025, 2)
+    insert_trade_data(2024, 9)

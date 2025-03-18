@@ -57,6 +57,7 @@ def get_date_range(start_date_str):
         start_date += timedelta(days=1)
     return date_list
 
+
 def generate_date_range_1(startYear, startMonth, endYear, endMonth):
     # 用于保存每个月的开始和结束日期
     date_range_list = []
