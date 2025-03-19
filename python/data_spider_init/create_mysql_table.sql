@@ -385,3 +385,43 @@ CREATE TABLE stock_cyq_perf_day (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     UNIQUE KEY unique_stock_date (ts_code, trade_date) COMMENT '股票代码和交易日期唯一索引'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='每日筹码及胜率';
+
+CREATE TABLE stock_stk_factor_data
+(
+    ts_code       VARCHAR(100)   NOT NULL COMMENT '股票代码',
+    trade_date    VARCHAR(100)   NOT NULL COMMENT '交易日期',
+    close         DECIMAL(20, 2)  COMMENT '收盘价',
+    open          DECIMAL(20, 2)  COMMENT '开盘价',
+    high          DECIMAL(20, 2)  COMMENT '最高价',
+    low           DECIMAL(20, 2)  COMMENT '最低价',
+    pre_close     DECIMAL(20, 2)  COMMENT '昨收价',
+    change_value  DECIMAL(20, 2)  COMMENT '涨跌额',
+    pct_change    DECIMAL(20, 2)  COMMENT '涨跌幅',
+    vol           DECIMAL(20, 2)  COMMENT '成交量 （手）',
+    amount        DECIMAL(20, 2)  COMMENT '成交额 （千元）',
+    adj_factor    DECIMAL(20, 6)  COMMENT '复权因子',
+    open_hfq      DECIMAL(20, 2)  COMMENT '开盘价后复权',
+    open_qfq      DECIMAL(20, 2)  COMMENT '开盘价前复权',
+    close_hfq     DECIMAL(20, 2)  COMMENT '收盘价后复权',
+    close_qfq     DECIMAL(20, 2)  COMMENT '收盘价前复权',
+    high_hfq      DECIMAL(20, 2)  COMMENT '最高价后复权',
+    high_qfq      DECIMAL(20, 2)  COMMENT '最高价前复权',
+    low_hfq       DECIMAL(20, 2)  COMMENT '最低价后复权',
+    low_qfq       DECIMAL(20, 2)  COMMENT '最低价前复权',
+    pre_close_hfq DECIMAL(20, 2)  COMMENT '昨收价后复权',
+    pre_close_qfq DECIMAL(20, 2)  COMMENT '昨收价前复权',
+    macd_dif      DECIMAL(20, 2)  COMMENT 'MCAD_DIF (基于前复权价格计算，下同)',
+    macd_dea      DECIMAL(20, 2)  COMMENT 'MCAD_DEA',
+    macd          DECIMAL(20, 2)  COMMENT 'MCAD',
+    kdj_k         DECIMAL(20, 2)  COMMENT 'KDJ_K',
+    kdj_d         DECIMAL(20, 2)  COMMENT 'KDJ_D',
+    kdj_j         DECIMAL(20, 2)  COMMENT 'KDJ_J',
+    rsi_6         DECIMAL(20, 2)  COMMENT 'RSI_6',
+    rsi_12        DECIMAL(20, 2)  COMMENT 'RSI_12',
+    rsi_24        DECIMAL(20, 2)  COMMENT 'RSI_24',
+    boll_upper    DECIMAL(20, 2)  COMMENT 'BOLL_UPPER',
+    boll_mid      DECIMAL(20, 2)  COMMENT 'BOLL_MID',
+    boll_lower    DECIMAL(20, 2)  COMMENT 'BOLL_LOWER',
+    cci           DECIMAL(20, 2)  COMMENT 'CCI',
+    PRIMARY KEY (ts_code, trade_date)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT ='股票技术因子';

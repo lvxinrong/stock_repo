@@ -51,6 +51,21 @@
         </ul>
       </li>
 
+      <li class="menu-category">
+        <h3 class="category-title">📊 技术指标</h3>
+        <ul class="sub-menu">
+          <li><router-link to="/technical-indicator/daily" class="menu-item">每日技术指标</router-link></li>
+        </ul>
+      </li>
+
+      <!-- 新增策略选股目录 -->
+      <li class="menu-category">
+        <h3 class="category-title">🎰 策略选股</h3>
+        <ul class="sub-menu">
+          <li><router-link to="/strategy/macd-20" class="menu-item">MACD20日技术指标</router-link></li>
+        </ul>
+      </li>
+
     </ul>
   </aside>
 </template>

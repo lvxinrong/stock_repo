@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 import chardet
 import pandas as pd
@@ -75,7 +76,7 @@ def save_result_to_mysql(save_result):
 
 
 if __name__ == '__main__':
-    trade_date = "20250317"
+    trade_date = datetime.today().strftime('%Y%m%d')
     up_stock_result = get_limit_up_stock(trade_date)
     query_list = []
     for s in up_stock_result:

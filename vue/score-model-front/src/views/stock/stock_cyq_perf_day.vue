@@ -1,37 +1,25 @@
-<template>
+<template xmlns="http://www.w3.org/1999/html">
   <div class="stock-cost-page">
     <!-- 头部 -->
     <div class="header">
       <h2 class="page-title">股票成本分布数据</h2>
     </div>
 
-    <!-- 胜率最高的 Top 10 -->
-    <div class="top-winner-container" v-if="!loading && !error && list.length > 0">
-      <h3 class="top-winner-title">胜率最高的 Top 10 股票代码</h3>
-      <div class="top-winner-list">
-        <span
-            v-for="(item, index) in topWinners"
-            :key="index"
-            class="winner-item"
-            @click="filterByTsCode(item.tsCode)"
-        >
-          {{ item.tsCode }} (胜率: {{ item.winnerRate }}%)
-        </span>
-      </div>
-    </div>
-
-    <!-- 过滤和排序 -->
-    <div class="filter-container">
-      <input
-          v-model="filterCode"
-          type="text"
-          placeholder="输入股票代码过滤，按回车确认"
-          class="filter-input"
-          @keyup.enter="applyFilter"
-      />
-<!--      <button @click="sortByWinnerRate" class="sort-button">-->
-<!--        按胜率排序 {{ sortDirection === 'asc' ? '↑' : '↓' }}-->
-<!--      </button>-->
+    <div>
+      <el-form-item label="股票代码">
+        <el-input v-model="queryParams.tsCode" placeholder="请输入股票代码" clearable />
+      </el-form-item>
+      <el-form-item label="交易日期">
+        <el-date-picker
+            v-model="queryParams.tradeDate"
+            type="date"
+            value-format="YYYYMMDD"
+            placeholder="选择日期"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="handleSearch">查询</el-button>
+      </el-form-item>
     </div>
 
     <!-- 数据表格 -->
@@ -54,7 +42,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(item, index) in filteredList" :key="index">
+          <tr v-for="(item, index) in list" :key="index">
             <td class="col-code">{{ item.tsCode }}</td>
             <td class="col-date">{{ item.tradeDate }}</td>
             <td class="col-number">{{ item.hisLow }}</td>
@@ -70,24 +58,49 @@
           </tr>
           </tbody>
         </table>
-        <div v-if="filteredList.length === 0" class="no-data">无数据</div>
+        <!-- 在表格下方添加分页组件 -->
+        <el-pagination
+            v-model:current-page="pagination.current"
+            v-model:page-size="pagination.size"
+            :page-sizes="[10, 20, 50, 100]"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="pagination.total"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            class="pagination-container"
+        />
+        <div v-if="list.length === 0" class="no-data">无数据</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { fetchStockCyqPerfCurrentDate } from '@/api/tableData.js';
+import { fetchStockCyqPerfCurrentDate, fetchStockCyqPerfCurrentDatePage } from '@/api/tableData.js';
+import {reactive} from "vue";
 
 export default {
   data() {
     return {
+      // 新增分页参数
+      pagination: {
+        current: 1,
+        size: 20,
+        total: 0
+      },
       list: [], // 原始数据
-      filteredList: [], // 过滤后的数据
+      // 移除 filteredList，改用分页接口过滤
+      filterParams: {
+        tsCode: ''
+      }, // 过滤后的数据
       loading: true, // 加载状态
       error: false, // 错误状态
       filterCode: '', // 股票代码过滤条件
       sortDirection: 'asc', // 排序方向：asc/desc
+      queryParams: {
+        tsCode: '',
+        tradeDate: ''
+      },
     };
   },
   created() {
@@ -96,17 +109,22 @@ export default {
   computed: {
     // 计算胜率最高的 Top 10
     topWinners() {
-      return this.list
-          .slice() // 创建副本以避免修改原始数据
-          .sort((a, b) => b.winnerRate - a.winnerRate) // 按胜率降序排序
-          .slice(0, 10); // 取前 10 个
+      return this.list.slice(0, 10)
     },
   },
   methods: {
     async fetchData() {
       try {
-        this.list = await fetchStockCyqPerfCurrentDate(); // 调用 API 获取数据
-        this.filteredList = this.list; // 初始化过滤后的数据
+        const params = {
+          ...this.queryParams,
+          page: this.pagination.current,
+          size: this.pagination.size
+        };
+
+        const res = await fetchStockCyqPerfCurrentDatePage(params);
+        this.list = res.records;
+        this.pagination.total = res.total;
+
       } catch (error) {
         console.error('数据获取失败:', error);
         this.error = true;
@@ -114,35 +132,24 @@ export default {
         this.loading = false;
       }
     },
-    // 应用过滤条件
-    applyFilter() {
-      if (this.filterCode.trim() === '') {
-        // 如果输入为空，显示全部数据
-        this.filteredList = this.list;
-      } else {
-        // 过滤数据
-        this.filteredList = this.list.filter((item) =>
-            item.tsCode.includes(this.filterCode.trim())
-        );
-      }
+
+    // 分页事件处理
+    handleSizeChange(newSize) {
+      this.pagination.size = newSize;
+      this.fetchData();
     },
-    // 点击 Top 10 股票代码进行过滤
-    filterByTsCode(tsCode) {
-      this.filterCode = tsCode;
-      this.applyFilter();
+
+    handleCurrentChange(newPage) {
+      this.pagination.current = newPage;
+      this.fetchData();
     },
-    // // 按胜率排序
-    // sortByWinnerRate() {
-    //   this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-    //   this.filteredList.sort((a, b) => {
-    //     if (this.sortDirection === 'asc') {
-    //       return a.winnerRate - b.winnerRate;
-    //     } else {
-    //       return b.winnerRate - a.winnerRate;
-    //     }
-    //   });
-    // },
-  },
+
+    // 查询条件处理
+    handleSearch() {
+      this.pagination.current = 1
+      this.fetchData()
+    },
+  }
 };
 </script>
 
@@ -288,6 +295,14 @@ export default {
   text-align: center;
   color: #999;
   font-size: 14px;
+}
+
+.pagination-container {
+  margin-top: 20px;
+  padding: 16px;
+  background: white;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* 响应式设计 */

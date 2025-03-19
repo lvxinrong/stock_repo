@@ -13,6 +13,8 @@ import ind_money_flow_ths_day_vue from "@/views/money_flow/ind_money_flow_ths_da
 import ind_money_flow_dc_day_vue from "@/views/money_flow/ind_money_flow_dc_day.vue";
 import mkt_money_flow_latest_90_days from "@/views/money_flow/mkt_money_flow_latest_90_days.vue";
 import stock_cyq_perf_day from "@/views/stock/stock_cyq_perf_day.vue";
+import stock_stk_factor_result from "@/views/stock/stock_technical_indicator_list.vue";
+import macd_20_day_cal_result from "@/views/macd20_result/macd_20_cal_result.vue"
 
 
 const routes = [
@@ -30,7 +32,9 @@ const routes = [
     {path: '/money-flow/ind_money_flow_ths_day_vue', name: 'indMoneyFlowThsDayVue', component: ind_money_flow_ths_day_vue},
     {path: '/money-flow/ind_money_flow_dc_day_vue', name: 'indMoneyFlowDcDayVue', component: ind_money_flow_dc_day_vue},
     {path: '/money-flow/mkt-money-flow-latest', name: 'mktMoneyFlowLatest90Days', component: mkt_money_flow_latest_90_days},
-    {path: '/stock_cyq/stock_cyq_perf_day', name: 'stockCyqPerfDay', component: stock_cyq_perf_day}
+    {path: '/stock_cyq/stock_cyq_perf_day', name: 'stockCyqPerfDay', component: stock_cyq_perf_day},
+    {path: '/technical-indicator/daily', name: 'stockStkFactorResult', component: stock_stk_factor_result },
+    {path: '/strategy/macd-20', name: 'macd20DaysCalResult', component: macd_20_day_cal_result}
 
 ];
 

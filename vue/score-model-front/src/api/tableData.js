@@ -92,3 +92,17 @@ export const fetchMktMoneyFlowLatest90Day = () => {
 export const fetchStockCyqPerfCurrentDate = () => {
     return apiClient.get('/stockCyqPerfDay/getLatestDateList');
 }
+
+export const fetchStockCyqPerfCurrentDatePage = (params) => {
+    return apiClient.get('/stockCyqPerfDay/getDataByPage', {params});
+}
+
+export const fetchStockSktPageResult = (params) => {
+    return apiClient.get('/stockStkFactorData/getDataByPage', {
+        params
+    });
+}
+
+export const macd20DaysCalResult = (params) => {
+    return apiClient.get('/macd20CalResultSearch/search', {params});
+}

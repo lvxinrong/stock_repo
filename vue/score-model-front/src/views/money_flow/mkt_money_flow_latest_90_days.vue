@@ -122,6 +122,7 @@ export default {
         xAxis: {
           type: 'category',
           data: dates,
+          inverse: true,
           axisLabel: {
             rotate: 45 // 横轴标签旋转 45 度
           }

@@ -44,7 +44,7 @@ public class MySQLGeneratorTest extends BaseGeneratorTest {
                         .xml("mapper.xml")
                         .pathInfo(Collections.singletonMap(OutputFile.xml, "H:\\stock\\stock_repo\\java\\ScoreModel\\src\\main\\resources\\xml"))
                 )
-                .strategyConfig(builder -> builder.addInclude("stock_cyq_perf_day")
+                .strategyConfig(builder -> builder.addInclude("stock_stk_factor_data")
                         .entityBuilder()
                         .enableLombok()
                 )

@@ -1,8 +1,6 @@
 import pandas as pd
-import tushare as ts
 from get_mysql_conn import get_mysql_conn
 from get_tusahre_api_pro import get_tushare_api_pro
-import pandas as pa
 
 
 def update_stock_basic_all():
