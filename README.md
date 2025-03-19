@@ -1,59 +1,47 @@
-# 股票评分工程
+# A股复盘分析系统
 
-> 本系统一共由3部分组成，分别是python相关的数据获取，java项目对数据进行分析和打分，vue项目进行展示。如果需要运行本系统，需要在本地安装mysql和elasticsearch
+> 本系统目前包含4个模块，分别是指数行情，涨停行情，资金行情，筹码结构。 系统架构上，使用python调用tushare获取基础数据，数据存储在Mysql中。Java负责读取数据和提供http接口供vue调用。前端使用vue进行展示。<br/>
+> 本系统需要使用到mysql和es。
 
-之前一直有种想法就是寻找强势股，俗话说该弱不弱，必有一强。按照本人投资经历观察下来，如果一直股票，在某段时间强于大盘或者强于指数（那么就意味着这只股票是可以关注起来的）
-那么按照我个人的理解，我选择从指数入手(这里忽略大盘指数，比如沪指和深指这种，重点在沪深300，中证上)，按月为维度，计算该月每天每只成分股和指数之间的差值(股票当日涨跌幅 - 所属指数当日涨跌幅)，并累加获得一个分数。
-当然按照这种计算逻辑，很大概率排名靠前的都是当月妖股，这里不作为投资建议(个人会根据计算结果再次做过滤，比如市值小于多少的不看，当月涨跌幅超过多少的不看)
+# 涨停行情
+![image](https://github.com/user-attachments/assets/b48fbc32-3fd5-40a9-95dd-fe609e44838b)
 
-TODO:
-1. 后续将增加python一键初始化功能，目前需要单个手动执行对应的py文件进行数据库表的创建和数据的抓取。
-2. python在处理累计数据的时候做的不好，后续需要增加更新方式（全量更新还是增量更新）
-3. 提供更多的计算策略(最近在思考，可否从成交额占比入手，比如某个板块的成交额在一段时间内不断地增加，或者简单拍个脑袋，如果某个板块成交额大于当日大盘成交额10% 就买入，超过40%就卖出)
+### 涨停行情模块: 
+1. 用于查看当日涨停股的统计信息，用于判断行情情绪，涨停数量越高证明短期情绪越乐观。
 
-# 项目初始化
+### deepseek模块：
+接入Deepseek API接口，将当日的涨停股票列表通过DeepSeekAPI接口进行分析，并将分析结果保存在本地，提示词在python中。
+
+# 资金行情
+![image](https://github.com/user-attachments/assets/576a370a-61ed-4fab-8a1e-2736d6eb91eb)
+
+资金行情主要分三个二级目录，分别是展示近90日大盘资金流向，当日同花顺板块资金流向， 当日东方财富板块资金流向。可用于板块情绪分析。
+
+# 筹码结构
+![image](https://github.com/user-attachments/assets/5acc2585-c86a-4d60-b336-402f33faa8c6)
+
+筹码分布用于展示当日的A股所有股票的筹码结构，和胜率(胜率来自tushare api接口，仅供参考)
+
+# 部署
+
+## 基础环境准备
 1. 安装docker
-2. 安装 mysql, elasticSearch镜像
-3. 安装vue
+2. 安装mysql, es
 
+## 配置修改
+1. 修改python代码和java代码中的mysql配置，java中的es配置也需要配置。
+2. 在本地磁盘中创建两个txt文件，用于保存tushare的token和deepseek api的token。目录修改在python代码中。
 
-docker 启动 mysql 命令:
-```
-docker run -d  --name good_stock -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -v H:\stock\docker_mysql_volume:/var/lib/mysql mysql:latest
-```
+## 数据初始化
+1. python项目中，根目录下有个create_mysql_table.sql 执行一下 库的名称我用的是good_stock
+2. python中运行相应表的python代码进行初始化。
+3. 后续更新可以创建定时任务，调用update_all_data_bu_day 定时任务设定晚上7点后执行，因为tushare的当日数据一般是下午5点后入库。
 
-docker 启动elasticSearch的命令:
-```
-docker run -d --name es -e "ES_JAVA_OPTS=-Xms1024m -Xmx2048m"  -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "xpack.security.transport.ssl.enabled=false" -v es-data:\h\stock\docker_elasticsearch_volume\data  -v es-plugins:\h\stock\docker_elasticsearch_volume\plugins  --privileged --network elastic -p 9200:9200 -p 9300:9300 docker.elastic.co/elasticsearch/elasticsearch:8.15.4
-```
+## vue项目
+npm run dev
 
-## python 工程
-> python 工程用于初始化数据库表结构和对应的数据抓取，三方数据采用tushare，需要自行获取token。目前尚未做到一件初始化和读取对应数据。
-
-### 主要表结构
-index_basic (指数基础信息)
-index_basic_daily(指数当日交易表)
-stock_basic(股票基础信息)
-trade_daily(股票每日交易信息)
-hs_300_stock ~ zh_1000_stock（指数成分表，分别统计沪深300， 中证100，中证500， 中证800和中证10000）
-
-## java 工程
-> java工程主要用于计算和评估股票表现，并按照自定义逻辑进行打分
-
-## vue工程
-前端页面展示
-
-# 效果展示
-沪深300:
-![image](https://github.com/user-attachments/assets/4cd5b5b8-31c3-4799-84e8-777d2d043c5d)
-
-中证100:
-![image](https://github.com/user-attachments/assets/08fe6464-7dbb-42f8-80d4-ab95cfbc328a)
-
-中证500:
-![image](https://github.com/user-attachments/assets/0425546f-4c24-4298-b236-09bd020b26f0)
-
-
+## java项目
+springboot启动方式。
 
 
 
