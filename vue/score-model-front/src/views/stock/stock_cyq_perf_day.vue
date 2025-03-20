@@ -5,21 +5,25 @@
       <h2 class="page-title">股票成本分布数据</h2>
     </div>
 
-    <div>
-      <el-form-item label="股票代码">
-        <el-input v-model="queryParams.tsCode" placeholder="请输入股票代码" clearable />
-      </el-form-item>
-      <el-form-item label="交易日期">
-        <el-date-picker
-            v-model="queryParams.tradeDate"
-            type="date"
-            value-format="YYYYMMDD"
-            placeholder="选择日期"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="handleSearch">查询</el-button>
-      </el-form-item>
+    <div class="search-container">
+      <el-form :inline="true" class="demo-form-inline">
+        <el-form-item label="股票代码" class="search-item">
+          <el-input v-model="queryParams.tsCode" placeholder="请输入股票代码"
+                    clearable suffix-icon="Search"/>
+        </el-form-item>
+        <el-form-item label="交易日期" class="search-item">
+          <el-date-picker
+              v-model="queryParams.tradeDate"
+              type="date"
+              value-format="YYYYMMDD"
+              placeholder="选择日期"
+              :editable="false"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleSearch" icon="Search">查询</el-button>
+        </el-form-item>
+      </el-form>
     </div>
 
     <!-- 数据表格 -->
@@ -157,10 +161,11 @@ export default {
 /* 基础布局 */
 .stock-cost-page {
   padding: 24px;
-  max-width: 90%;
+  max-width: 99%; /* 限制最大宽度 */
   margin: 0 auto;
-  background-color: #f9fafb;
+  background: #f8f9fa;
   min-height: 100vh;
+  box-sizing: border-box;
 }
 
 /* 头部样式 */
@@ -180,71 +185,6 @@ export default {
   margin: 0;
 }
 
-/* 胜率最高的 Top 10 容器 */
-.top-winner-container {
-  margin-bottom: 24px;
-  padding: 16px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.top-winner-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0 0 12px 0;
-  color: #333;
-}
-
-.top-winner-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.winner-item {
-  padding: 8px 12px;
-  background-color: #e8f0fe;
-  border-radius: 4px;
-  color: #1a73e8;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.winner-item:hover {
-  background-color: #d2e3fc;
-}
-
-/* 过滤和排序容器 */
-.filter-container {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
-.filter-input {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.sort-button {
-  padding: 8px 16px;
-  background-color: #6a11cb;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.2s;
-}
-
-.sort-button:hover {
-  background-color: #2575fc;
-}
-
 /* 数据容器 */
 .data-container {
   background: white;
@@ -261,27 +201,50 @@ export default {
 /* 表格样式 */
 .stock-table {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-  text-align: center; /* 所有内容居中对齐 */
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: 'Segoe UI', system-ui;
 }
 
 .stock-table th {
-  background-color: #6a11cb;
+  background: linear-gradient(145deg, #6a11cb 0%, #2575fc 100%); /* 渐变背景 */
   color: white;
   font-weight: 600;
-  padding: 12px 16px;
-  border-bottom: 2px solid #e8e8e8;
+  padding: 14px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .stock-table td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
-  color: #333;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f0f3f8;
+  color: #454f5b;
+  transition: background 0.2s ease;
 }
 
-.stock-table tbody tr:hover {
-  background-color: #f5f7fa;
+.stock-table tbody tr:nth-child(even) {
+  background: #f8f9ff; /* 斑马纹效果 */
+}
+
+.stock-table tbody tr:hover td {
+  background: #f1f3ff; /* 悬停高亮 */
+  cursor: pointer;
+}
+
+.col-number {
+  font-family: 'Roboto Mono', monospace;
+  text-align: right;
+  color: #2d3436;
+  white-space: nowrap;
+}
+
+.col-number::after {
+  content: '￥';
+  font-size: 0.8em;
+  color: #6c757d;
+  margin-left: 4px;
 }
 
 /* 列宽优化 */
@@ -305,6 +268,37 @@ export default {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.data-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(62, 72, 160, 0.08); /* 更柔和的阴影 */
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.el-pagination {
+  padding: 20px;
+  background: #fff;
+  border-top: 1px solid #f0f3f8;
+
+  .btn-prev, .btn-next, .number {
+    min-width: 36px;
+    height: 36px;
+    border-radius: 8px !important;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(106,17,203,0.2);
+    }
+  }
+
+  .active {
+    background: #6a11cb !important;
+    color: white !important;
+  }
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .header {
@@ -315,14 +309,24 @@ export default {
     font-size: 20px;
   }
 
-  .filter-container {
-    flex-direction: column;
-  }
-
   .stock-table th,
   .stock-table td {
     padding: 10px 12px;
     font-size: 12px;
   }
+}
+
+/* 加载动画 */
+@keyframes shimmer {
+  100% { background-position: 100% 0; }
+}
+
+.skeleton-row {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 400% 100%;
+  animation: shimmer 1.5s infinite;
+  height: 48px;
+  margin: 8px 0;
+  border-radius: 4px;
 }
 </style>
