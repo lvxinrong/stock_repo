@@ -158,6 +158,7 @@
 import {ref, reactive, onMounted} from 'vue'
 import {ElMessage} from "element-plus";
 import {fetchStockSktPageResult} from '@/api/tableData.js'
+import {Search} from "@element-plus/icons-vue";
 
 const loading = ref(false)
 const tableData = ref([])
@@ -360,11 +361,11 @@ $color-range: (
   }
 }
 
-// 应用到MACD等指标列
-[prop^="macd"] .cell {
-  color: get-color(cellData);
-  font-weight: 500;
-}
+//// 应用到MACD等指标列
+//[prop^="macd"] .cell {
+//  color: get-color(cellData);
+//  font-weight: 500;
+//}
 
 @media (max-width: 768px) {
   // 隐藏次要指标列

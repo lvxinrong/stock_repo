@@ -16,6 +16,7 @@
     "element-plus": "^2.8.8",
     "openai": "^4.87.3",
     "vue": "^3.5.12",
+    "vue-echarts": "^7.0.3",
     "vue-router": "^4.4.5",
     "vuex": "^4.1.0"
   },

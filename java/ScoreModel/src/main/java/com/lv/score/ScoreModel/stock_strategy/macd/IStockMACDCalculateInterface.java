@@ -5,7 +5,7 @@ import com.lv.score.ScoreModel.stock_strategy.macd.entity.MACD5DayAnalysisResult
 
 import java.util.Map;
 
-public interface StockMACDCalculateInterface {
+public interface IStockMACDCalculateInterface {
 
     Map<String, MACD5DayAnalysisResult> getLatest5DaysData();
 

@@ -76,7 +76,8 @@ def save_result_to_mysql(save_result):
 
 
 if __name__ == '__main__':
-    trade_date = datetime.today().strftime('%Y%m%d')
+    # trade_date = datetime.today().strftime('%Y%m%d')
+    trade_date = "20250321"
     up_stock_result = get_limit_up_stock(trade_date)
     query_list = []
     for s in up_stock_result:

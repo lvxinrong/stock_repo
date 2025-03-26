@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IDailyBasicInfoService extends IService<DailyBasicInfo> {
 
+    DailyBasicInfo getLatestData(String tsCode);
+
 }

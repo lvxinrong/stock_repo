@@ -1,0 +1,183 @@
+@import './variables.scss';
+
+// 页面容器通用样式
+.page-container {
+  padding: $spacing-lg;
+  
+  .page-header {
+    margin-bottom: $spacing-lg;
+    
+    .title {
+      font-size: 24px;
+      font-weight: 600;
+      color: $text-primary;
+      margin-bottom: $spacing-md;
+    }
+    
+    .subtitle {
+      color: $text-secondary;
+      font-size: 14px;
+    }
+  }
+}
+
+// 卡片容器通用样式
+.card-container {
+  background: white;
+  border-radius: $border-radius-md;
+  padding: $spacing-lg;
+  box-shadow: $box-shadow-light;
+  margin-bottom: $spacing-lg;
+}
+
+// 表格通用样式
+.custom-table {
+  width: 100%;
+  
+  :deep(.el-table) {
+    border-radius: $border-radius-sm;
+    overflow: hidden;
+    
+    .el-table__header {
+      background-color: $background-light;
+      th {
+        background-color: transparent;
+        color: $text-primary;
+        font-weight: 600;
+        padding: $spacing-md;
+        border-bottom: 1px solid #ebeef5;
+      }
+    }
+    
+    .el-table__row {
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background-color: rgba($secondary-color, 0.05);
+        transform: translateY(-2px);
+      }
+      
+      td {
+        padding: $spacing-md;
+        color: $text-primary;
+      }
+    }
+  }
+}
+
+// 分页器通用样式
+.pagination-container {
+  margin-top: $spacing-lg;
+  display: flex;
+  justify-content: flex-end;
+  
+  :deep(.el-pagination) {
+    padding: $spacing-sm 0;
+    
+    .el-pagination__total,
+    .el-pagination__sizes {
+      margin-right: $spacing-md;
+    }
+    
+    .el-pager li {
+      background: transparent;
+      
+      &.active {
+        background-color: $secondary-color;
+        color: white;
+      }
+    }
+  }
+}
+
+// 表单通用样式
+.form-container {
+  .el-form-item {
+    margin-bottom: $spacing-lg;
+    
+    .el-form-item__label {
+      color: $text-primary;
+      font-weight: 500;
+    }
+    
+    .el-input,
+    .el-select {
+      width: 100%;
+    }
+  }
+}
+
+// 按钮通用样式
+.custom-button {
+  &.el-button--primary {
+    background-color: $secondary-color;
+    border-color: $secondary-color;
+    
+    &:hover {
+      background-color: darken($secondary-color, 10%);
+      border-color: darken($secondary-color, 10%);
+    }
+  }
+}
+
+// 数据展示卡片通用样式
+.data-card {
+  background: white;
+  border-radius: $border-radius-md;
+  padding: $spacing-lg;
+  box-shadow: $box-shadow-light;
+  
+  .card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: $spacing-md;
+  }
+  
+  .card-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: $secondary-color;
+  }
+  
+  .card-footer {
+    margin-top: $spacing-md;
+    color: $text-secondary;
+    font-size: 14px;
+  }
+}
+
+// 修改涨跌颜色通用样式
+.price-up {
+  color: $price-up-color !important;
+}
+
+.price-down {
+  color: $price-down-color !important;
+}
+
+// 涨跌背景色（用于标签等）
+.bg-price-up {
+  background-color: rgba($price-up-color, 0.1) !important;
+  color: $price-up-color !important;
+  border-color: rgba($price-up-color, 0.2) !important;
+}
+
+.bg-price-down {
+  background-color: rgba($price-down-color, 0.1) !important;
+  color: $price-down-color !important;
+  border-color: rgba($price-down-color, 0.2) !important;
+}
+
+// 表格中的涨跌样式
+.custom-table {
+  :deep(.el-table) {
+    .price-up {
+      color: $price-up-color !important;
+    }
+    
+    .price-down {
+      color: $price-down-color !important;
+    }
+  }
+} 

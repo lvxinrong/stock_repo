@@ -46,17 +46,12 @@ if __name__ == '__main__':
         print(f"Error occurred: update_stock_basic_all. currDate: {currDate}, Exception: {e}")
 
     try:
-        update_stock_money_flow_by_trade_date(currDate)
-    except Exception as e:
-        print(f"Error occurred: update_stock_basic_all. currDate: {currDate}, Exception: {e}")
-
-    try:
         update_stock_cyq_perf_day(currDate)
     except Exception as e:
         print(f"Error occurred: update_stock_basic_all. currDate: {currDate}, Exception: {e}")
 
     try:
-        get_curr_data_stock_stk_factor_data_fast()
+        get_curr_data_stock_stk_factor_data_fast(currDate)
     except Exception as e:
         print(f"Error occurred: update_stock_basic_all. currDate: {currDate}, Exception: {e}")
 

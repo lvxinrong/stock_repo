@@ -170,8 +170,7 @@ def update_stock_data_day(tradeDate, tusharePro, mysqlConn):
     print(f'finish data tradeDate: {tradeDate}')
 
 
-def get_curr_data_stock_stk_factor_data_fast():
-    currDate = datetime.today().strftime('%Y%m%d')
+def get_curr_data_stock_stk_factor_data_fast(currDate):
     tushare_pro = get_tushare_api_pro()
     connection = get_mysql_conn()
     update_stock_data_day(currDate, tushare_pro, connection)
@@ -181,4 +180,4 @@ if __name__ == '__main__':
     # startValue = "20250101"
     # endValue = "20250331"
     # get_all_stock_stk_factor_data(startValue, endValue)
-    get_curr_data_stock_stk_factor_data_fast()
+    get_curr_data_stock_stk_factor_data_fast("20250324")

@@ -1,0 +1,30 @@
+// 主题色
+$primary-color: #2c3e50;
+$secondary-color: #3498db;
+$success-color: #27ae60;
+$warning-color: #f1c40f;
+$danger-color: #e74c3c;
+$text-primary: #2c3e50;
+$text-secondary: #7f8c8d;
+$background-light: #f8f9fa;
+$background-dark: #2c3e50;
+
+// 阴影效果
+$box-shadow-light: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+$box-shadow-medium: 0 4px 16px 0 rgba(0, 0, 0, 0.15);
+
+// 圆角
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 16px;
+
+// 间距
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+
+// 修改涨跌颜色
+$price-up-color: #f5222d;    // 上涨红色
+$price-down-color: #52c41a;  // 下跌绿色 

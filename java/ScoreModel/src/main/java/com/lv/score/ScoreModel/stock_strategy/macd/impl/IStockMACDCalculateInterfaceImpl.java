@@ -4,11 +4,10 @@ import com.lv.score.ScoreModel.entity.StockStkFactorData;
 import com.lv.score.ScoreModel.service.IStockStkFactorDataService;
 import com.lv.score.ScoreModel.stock_strategy.macd.analyzers.MACD20DayAnalyzer;
 import com.lv.score.ScoreModel.stock_strategy.macd.analyzers.MACD5DayAnalyzer;
-import com.lv.score.ScoreModel.stock_strategy.macd.StockMACDCalculateInterface;
+import com.lv.score.ScoreModel.stock_strategy.macd.IStockMACDCalculateInterface;
 import com.lv.score.ScoreModel.stock_strategy.macd.entity.MACD20DayAnalysisResult;
 import com.lv.score.ScoreModel.stock_strategy.macd.entity.MACD5DayAnalysisResult;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class StockMACDCalculateInterfaceImpl implements StockMACDCalculateInterface {
+public class IStockMACDCalculateInterfaceImpl implements IStockMACDCalculateInterface {
 
     @Autowired
     IStockStkFactorDataService iStockStkFactorDataService;

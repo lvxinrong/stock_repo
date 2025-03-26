@@ -40,4 +40,9 @@ public class DailyBasicInfoMapperTest {
         System.out.println(limitUpThsDailyMapper.getLast60UpDate());
     }
 
+    @Test
+    public void test111() {
+        System.out.println(dailyBasicInfoMapper.getLatestDataByTsCode("000001.SZ").getTradeDate());
+    }
+
 }

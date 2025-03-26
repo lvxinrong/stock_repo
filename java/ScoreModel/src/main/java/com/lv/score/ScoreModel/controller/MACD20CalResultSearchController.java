@@ -2,6 +2,7 @@ package com.lv.score.ScoreModel.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lv.score.ScoreModel.calculate.entity.PageInfo;
+import com.lv.score.ScoreModel.entity.MACD20EsResultVO;
 import com.lv.score.ScoreModel.service.es_search.MACD20AnalyzeResultSearchService;
 import com.lv.score.ScoreModel.stock_strategy.macd.entity.MACD20EsResult;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +26,12 @@ public class MACD20CalResultSearchController {
 
 
     @GetMapping("/search")
-    public PageInfo<MACD20EsResult> search(
+    public PageInfo<MACD20EsResultVO> search(
             @RequestParam Map<String, Object> searchConditions,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
-        PageInfo<MACD20EsResult> result = null;
+        PageInfo<MACD20EsResultVO> result = null;
         try {
             result = macd20AnalyzeResultSearchService.search(searchConditions, page, size);
         } catch (IOException e) {

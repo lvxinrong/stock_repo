@@ -19,4 +19,8 @@ public interface IStockBasicService extends IService<StockBasic> {
 
     List<StockBasic> getStockBasicByMarket(String market);
 
+    List<StockBasic> getAllData();
+
+    String getStockNameByTsCode(String tsCode);
+
 }

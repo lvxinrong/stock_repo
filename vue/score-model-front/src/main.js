@@ -6,6 +6,8 @@ import 'element-plus/dist/index.css';
 import './style/common.scss'; // 引入公共样式
 import locale from 'element-plus/es/locale/lang/zh-cn'
 import * as Vue from "echarts";
+import '@/styles/variables.scss'
+import '@/styles/transitions.scss'
 
 
 

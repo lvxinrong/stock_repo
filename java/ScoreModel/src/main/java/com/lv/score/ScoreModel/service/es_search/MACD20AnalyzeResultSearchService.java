@@ -10,10 +10,9 @@ import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.json.JsonData;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lv.score.ScoreModel.calculate.entity.PageInfo;
-import com.lv.score.ScoreModel.calculate.save.CalculateResultMonthEsEntity;
+import com.lv.score.ScoreModel.entity.MACD20EsResultVO;
+import com.lv.score.ScoreModel.service.IStockBasicService;
 import com.lv.score.ScoreModel.stock_strategy.macd.entity.MACD20EsResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +29,9 @@ public class MACD20AnalyzeResultSearchService {
     @Autowired
     ElasticsearchClient elasticsearchClient;
 
+    @Autowired
+    IStockBasicService iStockBasicService;
+
     // 查询参数常量
     private static final String TS_CODE = "tsCode";
     private static final String TREND_DIRECTION = "trendDirection";
@@ -41,9 +43,9 @@ public class MACD20AnalyzeResultSearchService {
     private static final String MULTI_FILTER_PASSED = "multiFilterPassed";
     private static final String BUY_SIGNAL = "buySignal";
 
-    private final String indexName = "macd20_20250319";
+    private final String indexName = "macd20_";
 
-    public PageInfo<MACD20EsResult> search(Map<String, Object> conditions, int page, int size) throws IOException {
+    public PageInfo<MACD20EsResultVO> search(Map<String, Object> conditions, int page, int size) throws IOException {
         // 构建Bool查询
         BoolQuery.Builder boolQueryBuilder = new BoolQuery.Builder();
 
@@ -66,7 +68,7 @@ public class MACD20AnalyzeResultSearchService {
 
         // 构建SearchRequest
         SearchRequest searchRequest = SearchRequest.of(builder -> builder
-                .index(indexName)
+                .index(indexName + conditions.get("tradeDate"))
                 .from(from)
                 .size(size)
                 .query(Query.of(q -> q.bool(boolQueryBuilder.build())))
@@ -78,12 +80,16 @@ public class MACD20AnalyzeResultSearchService {
         List<MACD20EsResult> result = response.hits().hits().stream()
                 .map(Hit::source)
                 .toList();
-
+        List<MACD20EsResultVO> voList = result.stream().map(e -> {
+            MACD20EsResultVO vo = new MACD20EsResultVO(e);
+            vo.setStockName(iStockBasicService.queryByTsCode(vo.getTsCode()).getName());
+            return vo;
+        }).toList();
         // 构建响应
-        PageInfo<MACD20EsResult> pageResult = new PageInfo<>();
+        PageInfo<MACD20EsResultVO> pageResult = new PageInfo<>();
         pageResult.setPage(page);
         pageResult.setPageSize(size);
-        pageResult.setItems(result);
+        pageResult.setItems(voList);
         pageResult.setTotal(response.hits().total().value());
         return pageResult;
     }

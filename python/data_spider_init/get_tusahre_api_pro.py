@@ -17,3 +17,13 @@ def get_token():
     with open('H:\\stock\\tushare_token.txt', 'r') as file:
         content = file.read()
         return content
+
+
+def get_token_time():
+    pro = ts.pro_api()
+    df = pro.user(token=get_token())
+    print(df)
+
+
+if __name__ == '__main__':
+    get_token_time()

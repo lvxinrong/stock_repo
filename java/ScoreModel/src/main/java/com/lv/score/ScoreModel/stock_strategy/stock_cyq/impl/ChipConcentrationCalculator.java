@@ -1,4 +1,4 @@
-package com.lv.score.ScoreModel.stock_strategy.stock_cyq;
+package com.lv.score.ScoreModel.stock_strategy.stock_cyq.impl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

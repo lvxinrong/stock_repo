@@ -24,7 +24,7 @@ const routes = [
     { path: '/zh500', name: 'Zh500', component: Zh500 },
     { path: '/zh800', name: 'Zh800', component: Zh800 },
     { path: '/zh1000', name: 'Zh1000', component: Zh1000 },
-    { path: '/limit-up-day', name: 'limitUp', component: LimitUp },
+    { path: '/limit-up-day', name: 'LimitUpDay', component: LimitUp },
     { path: '/limit-down-day', name: 'limitDown', component: LimitDown },
     { path: '/detail/:ts_code', name: 'Detail', component: Detail },
     {path: '/deepseek-analysis', name: 'DeepSeekResult',  component: deep_seek_result},
@@ -34,8 +34,8 @@ const routes = [
     {path: '/money-flow/mkt-money-flow-latest', name: 'mktMoneyFlowLatest90Days', component: mkt_money_flow_latest_90_days},
     {path: '/stock_cyq/stock_cyq_perf_day', name: 'stockCyqPerfDay', component: stock_cyq_perf_day},
     {path: '/technical-indicator/daily', name: 'stockStkFactorResult', component: stock_stk_factor_result },
-    {path: '/strategy/macd-20', name: 'macd20DaysCalResult', component: macd_20_day_cal_result}
-
+    {path: '/strategy/macd-20', name: 'macd20DaysCalResult', component: macd_20_day_cal_result},
+    {path: '/stock_cyq/stock_cyq_converge', name: 'stockCyqConverge', component: () => import('@/views/stock_cyq/stock_cyq_converge.vue')}
 ];
 
 const router = createRouter({

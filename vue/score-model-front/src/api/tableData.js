@@ -106,3 +106,18 @@ export const fetchStockSktPageResult = (params) => {
 export const macd20DaysCalResult = (params) => {
     return apiClient.get('/macd20CalResultSearch/search', {params});
 }
+
+export const fetchStockBasicInfo = (tsCode) => {
+    return apiClient.get('/stockBasic/getStockBasicByTsCode?tsCode=' + tsCode);
+}
+
+export const fetchLimitUpTrend = () => {
+    return ''
+}
+
+// 获取筹码集中度数据
+export const fetchStockCyqConverge = (params) => {
+  return apiClient.get('/stockCyqPerfDay/getAnalyzeDataByPage', {
+    params
+  });
+}

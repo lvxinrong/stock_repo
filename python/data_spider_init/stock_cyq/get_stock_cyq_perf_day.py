@@ -90,20 +90,6 @@ def update_stock_cyq_perf_day(tradeDate):
 
 if __name__ == '__main__':
     update_stock_cyq_perf_day("20250301")
-    update_stock_cyq_perf_day("20250302")
-    update_stock_cyq_perf_day("20250303")
-    update_stock_cyq_perf_day("20250304")
-    update_stock_cyq_perf_day("20250305")
-    update_stock_cyq_perf_day("20250306")
-    update_stock_cyq_perf_day("20250307")
-    update_stock_cyq_perf_day("20250308")
-    update_stock_cyq_perf_day("20250309")
-    update_stock_cyq_perf_day("20250310")
-    update_stock_cyq_perf_day("20250311")
-    update_stock_cyq_perf_day("20250312")
-    update_stock_cyq_perf_day("20250313")
-    update_stock_cyq_perf_day("20250314")
-    update_stock_cyq_perf_day("20250315")
-    update_stock_cyq_perf_day("20250316")
+
 
 

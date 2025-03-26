@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -20,12 +18,12 @@ import java.util.Map;
 public class MACDStrategyExecutor {
 
     @Autowired
-    StockMACDCalculateInterface stockMACDCalculateInterface;
+    IStockMACDCalculateInterface IStockMACDCalculateInterface;
 
     @Autowired
     private ElasticsearchClient elasticsearchClient;
 
-    private static final String ES_INDEX_NAME = "macd20";
+    public static final String ES_INDEX_NAME = "macd20";
 
 
     /**
@@ -34,7 +32,7 @@ public class MACDStrategyExecutor {
      * 将结果写入到es中
      */
     public void generateMACD20DayReport2ES() {
-        Map<String, MACD20DayAnalysisResult> calResult = stockMACDCalculateInterface.getLatest20DaysData();
+        Map<String, MACD20DayAnalysisResult> calResult = IStockMACDCalculateInterface.getLatest20DaysData();
         try {
             save2ES(calResult.values().stream().map(MACD20EsResult::new).toList());
         }catch (Exception e) {
@@ -43,7 +41,6 @@ public class MACDStrategyExecutor {
     }
 
     private void save2ES(List<MACD20EsResult> products) throws IOException {
-        String calDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         BulkRequest.Builder br = new BulkRequest.Builder();
         products.forEach(product->br.operations(operation->
                 operation.index(i->i

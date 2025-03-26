@@ -27,7 +27,7 @@ def update_curr_money_flow_data():
     try:
         update_stock_money_flow_by_trade_date(currDate)
     except Exception as e:
-        print(f"Error occurred: update_mkt_money_flow_dc_by_trade_date. currDate: {currDate}, Exception: {e}")
+        print(f"Error occurred: update_stock_money_flow_by_trade_date. currDate: {currDate}, Exception: {e}")
 
     try:
         update_stock_money_flow_dc_by_trade_date(currDate)
