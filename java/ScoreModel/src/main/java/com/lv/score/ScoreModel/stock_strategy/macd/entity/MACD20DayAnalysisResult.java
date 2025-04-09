@@ -29,4 +29,5 @@ public class MACD20DayAnalysisResult {
     private Boolean buySignal;
     private String tsCode;
     private String lastTradeDate;
+    private Integer buySignalTrueCount;
 }

@@ -10,6 +10,7 @@ import com.lv.score.ScoreModel.calculate.entity.CalculateResultMonth;
 import com.lv.score.ScoreModel.entity.IndexBasicDaily;
 import com.lv.score.ScoreModel.entity.TradeDaily;
 import com.lv.score.ScoreModel.service.IIndexBasicDailyService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class CalculateService implements CalculateServiceInterface {
 
     @Autowired
@@ -59,8 +61,12 @@ public class CalculateService implements CalculateServiceInterface {
         for (IndexStock i : indexStockList) {
             List<TradeDaily> tradeDailyList = queryTradeDailyService.getTradeDaily(i.getConCode(), stock_month);
             List<CalculateResultDaily> dailies = calCoreService.calStockScoreList(indexBasicDailyMap, tradeDailyList);
-            calResultMap.put(i.getConCode() + i.getTradeDate(), dailies);
-            monthScoreList.add(calCoreService.getMonthScore(dailies));
+            if (dailies.size() != 0) {
+                calResultMap.put(i.getConCode() + i.getTradeDate(), dailies);
+                monthScoreList.add(calCoreService.getMonthScore(dailies));
+            } else {
+                log.warn("CalculateResultDaily List is Null. IndexCode: {}, tradeDate: {}", i.getIndexCode(), i.getTradeDate());
+            }
         }
         String formatString = indexCode.substring(0, 6);
         saveCalResult.saveDailyScoreToES(calResultMap, formatString);

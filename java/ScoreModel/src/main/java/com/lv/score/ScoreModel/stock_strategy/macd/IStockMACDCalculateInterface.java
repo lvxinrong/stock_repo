@@ -11,4 +11,6 @@ public interface IStockMACDCalculateInterface {
 
 
     Map<String, MACD20DayAnalysisResult> getLatest20DaysData();
+
+    Map<String, MACD20DayAnalysisResult> get20DaysData(String calData);
 }

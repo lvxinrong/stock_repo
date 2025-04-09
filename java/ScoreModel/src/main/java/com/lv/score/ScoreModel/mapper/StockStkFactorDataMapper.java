@@ -46,4 +46,16 @@ public interface StockStkFactorDataMapper extends BaseMapper<StockStkFactorData>
     @Select("SELECT MAX(trade_date) from stock_stk_factor_data")
     String getLastDate();
 
+    @Select("""
+            SELECT *
+            FROM (
+                SELECT
+                    *,
+                    ROW_NUMBER() OVER (PARTITION BY ts_code ORDER BY trade_date DESC) AS rn
+                FROM stock_stk_factor_data where trade_date <= #{cal_date}
+            ) sub
+            WHERE rn <= 20;
+            """)
+    List<StockStkFactorData> get20DaysData(String cal_date);
+
 }

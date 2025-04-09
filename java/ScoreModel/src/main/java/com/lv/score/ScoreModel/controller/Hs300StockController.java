@@ -4,6 +4,7 @@ import com.lv.score.ScoreModel.calculate.entity.CalculateResultMonth;
 import com.lv.score.ScoreModel.calculate.entity.PageInfo;
 import com.lv.score.ScoreModel.calculate.save.CalculateResultMonthEsEntity;
 import com.lv.score.ScoreModel.calculate.save.SearchResultInEs;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +29,7 @@ import static com.lv.score.ScoreModel.constant.EsIndexNameConstant.HS300_INDEX_N
  */
 @RestController
 @RequestMapping("/hs300Stock")
+@Slf4j
 public class Hs300StockController {
 
     @Autowired
@@ -41,7 +43,12 @@ public class Hs300StockController {
                                                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                                                      @RequestParam(value = "stockMonth", required = false) String stockMonth) throws IOException {
         String indexName = HS300_INDEX_NAME + (StringUtils.isBlank(stockMonth) ? stockMonthDefault : stockMonth);
-        return searchResultInEs.searchWithPagination(indexName, page, pageSize);
+        try {
+            return searchResultInEs.searchWithPagination(indexName, page, pageSize);
+        } catch (Exception e) {
+            log.warn("Hs300StockController getMonthScore Exception.", e);
+        }
+        return new PageInfo<>();
     }
 
 }

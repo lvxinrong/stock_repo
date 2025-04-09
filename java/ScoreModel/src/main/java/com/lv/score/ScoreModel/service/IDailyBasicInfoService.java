@@ -15,4 +15,6 @@ public interface IDailyBasicInfoService extends IService<DailyBasicInfo> {
 
     DailyBasicInfo getLatestData(String tsCode);
 
+    DailyBasicInfo getBasicInfoByTsCodeAndTradeDate(String tsCode, String tradeDate);
+
 }

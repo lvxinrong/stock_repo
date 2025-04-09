@@ -11,7 +11,9 @@ import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.json.JsonData;
 import com.lv.score.ScoreModel.calculate.entity.PageInfo;
+import com.lv.score.ScoreModel.entity.DailyBasicInfo;
 import com.lv.score.ScoreModel.entity.MACD20EsResultVO;
+import com.lv.score.ScoreModel.service.IDailyBasicInfoService;
 import com.lv.score.ScoreModel.service.IStockBasicService;
 import com.lv.score.ScoreModel.stock_strategy.macd.entity.MACD20EsResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class MACD20AnalyzeResultSearchService {
@@ -31,6 +34,9 @@ public class MACD20AnalyzeResultSearchService {
 
     @Autowired
     IStockBasicService iStockBasicService;
+
+    @Autowired
+    IDailyBasicInfoService iDailyBasicInfoService;
 
     // 查询参数常量
     private static final String TS_CODE = "tsCode";
@@ -44,6 +50,8 @@ public class MACD20AnalyzeResultSearchService {
     private static final String BUY_SIGNAL = "buySignal";
 
     private final String indexName = "macd20_";
+
+    private final static MathContext mc = new MathContext(8, RoundingMode.HALF_UP);
 
     public PageInfo<MACD20EsResultVO> search(Map<String, Object> conditions, int page, int size) throws IOException {
         // 构建Bool查询
@@ -83,6 +91,8 @@ public class MACD20AnalyzeResultSearchService {
         List<MACD20EsResultVO> voList = result.stream().map(e -> {
             MACD20EsResultVO vo = new MACD20EsResultVO(e);
             vo.setStockName(iStockBasicService.queryByTsCode(vo.getTsCode()).getName());
+            vo.setCumulativeIncrease(BigDecimal.valueOf(getCumulativeIncrease(e.getTsCode(), e.getLastTradeDate())));
+            vo.setTotalVm(getTotalVm(e.getTsCode()));
             return vo;
         }).toList();
         // 构建响应
@@ -180,4 +190,34 @@ public class MACD20AnalyzeResultSearchService {
         }
         return null;
     }
+
+    /**
+     * 计算格式：
+     * macd计算日期 close  -> 最新的交易日close
+     * 计算涨跌幅
+     */
+    private double getCumulativeIncrease(String tsCode, String tradeDate) {
+        DailyBasicInfo start = iDailyBasicInfoService.getBasicInfoByTsCodeAndTradeDate(tsCode, tradeDate);
+        DailyBasicInfo end = iDailyBasicInfoService.getLatestData(tsCode);
+        if (start == null || end == null) {
+            return 0.0;
+        }
+
+        double startClose = start.getClose();
+        double endClose = end.getClose();
+
+        return (endClose - startClose) / startClose * 100;
+    }
+
+    /**
+     * 查询股票的当日市值
+     */
+    public double getTotalVm(String tsCode) {
+        DailyBasicInfo dailyBasicInfo = iDailyBasicInfoService.getLatestData(tsCode);
+        // 单位万元
+        double totalVm = dailyBasicInfo.getTotalMv();
+        // 转换为亿元
+        return totalVm / 10000;
+    }
+
 }

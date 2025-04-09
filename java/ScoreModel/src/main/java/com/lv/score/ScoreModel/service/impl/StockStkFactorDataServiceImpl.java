@@ -64,4 +64,9 @@ public class StockStkFactorDataServiceImpl extends ServiceImpl<StockStkFactorDat
     public List<StockStkFactorData> getLast20DaysData() {
         return stockStkFactorDataMapper.getLast20DaysData();
     }
+
+    @Override
+    public List<StockStkFactorData> get20DaysData(String date) {
+        return stockStkFactorDataMapper.get20DaysData(date);
+    }
 }

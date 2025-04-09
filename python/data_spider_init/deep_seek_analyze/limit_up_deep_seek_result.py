@@ -1,12 +1,6 @@
 import json
-from datetime import datetime
-
-import chardet
-import pandas as pd
-from openai import OpenAI
 from get_deep_seek_client import get_deepseek_client
 from get_mysql_conn import get_mysql_conn
-from mysql.connector import Error
 
 
 def get_stock_analyze_info(stock_list: list):
@@ -22,7 +16,7 @@ def get_stock_analyze_info(stock_list: list):
     """
 
     response = client.chat.completions.create(
-        model="deepseek-chat",
+        model="deep_seek_analyze-chat",
         messages=[
             {"role": "system", "content": system_content},
             {"role": "user", "content": json.dumps(stock_list)},

@@ -11,13 +11,14 @@ def get_latest_trade_date():
     cnx = get_mysql_conn()
     print(cnx)
     try:
-        with cnx.cursor() as cursor:
-            # 查询 trade_date 最新值
-            query = "SELECT MAX(trade_date) FROM trade_daily;"
-            cursor.execute(query)
-            result = cursor.fetchone()
-            # 返回结果
-            return result[0]
+        cursor = cnx.cursor()
+        # 查询 trade_date 最新值
+        query = "SELECT MAX(trade_date) FROM trade_daily;"
+        cursor.execute(query)
+        result = cursor.fetchone()
+        # 返回结果
+        cursor.close()
+        return result[0]
     finally:
         # 关闭连接
         cnx.close()
@@ -67,5 +68,9 @@ def update_trade_daily_start_with_date(date_string):
     cnx.close()
 
 
-if __name__ == '__main__':
+def update_trade_daily_last_data():
     update_trade_daily_start_with_date(get_next_date_string(get_latest_trade_date()))
+
+
+if __name__ == '__main__':
+    update_trade_daily_last_data()

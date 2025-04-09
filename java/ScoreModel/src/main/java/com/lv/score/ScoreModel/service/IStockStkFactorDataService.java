@@ -29,4 +29,6 @@ public interface IStockStkFactorDataService extends IService<StockStkFactorData>
 
     List<StockStkFactorData> getLast20DaysData();
 
+    List<StockStkFactorData> get20DaysData(String date);
+
 }

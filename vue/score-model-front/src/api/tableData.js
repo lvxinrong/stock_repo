@@ -9,7 +9,6 @@ export const fetchHuShen300Data = (page, pageSize, stockMonth) => {
 };
 
 export const fetchZh100Data = (page, pageSize, stockMonth) => {
-    console.log(page, pageSize)
     return apiClient.get('/zh100Stock/score', {
         params: { page, pageSize, stockMonth},
     });

@@ -69,6 +69,7 @@
           v-loading="loading"
           size="small"
           class="compact-table"
+          @sort-change="handleSortChange"
         >
           <el-table-column prop="tsCode" label="股票代码" width="120">
             <template #default="{ row }">
@@ -165,7 +166,42 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column prop="buyFormatString" label="决策建议" min-width="200" />
+          <el-table-column 
+            prop="cumulativeIncrease" 
+            label="累计涨幅" 
+            width="120"
+            sortable="custom"
+            :sort-orders="['ascending', 'descending']"
+          >
+            <template #default="{ row }">
+              <span :class="row.cumulativeIncrease >= 0 ? 'price-up' : 'price-down'">
+                {{ row.cumulativeIncrease?.toFixed(2) }}%
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column 
+            prop="buySignalTrueCount" 
+            label="推荐次数" 
+            width="100"
+            sortable="custom"
+            :sort-orders="['ascending', 'descending']"
+          >
+            <template #default="{ row }">
+              <span>{{ row.buySignalTrueCount }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column 
+            prop="totalVm" 
+            label="最新市值(亿元)" 
+            width="120"
+            sortable="custom"
+            :sort-orders="['ascending', 'descending']"
+          >
+            <template #default="{ row }">
+              <span>{{ row.totalVm?.toFixed(1) }}亿元</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="buyFormatString" label="决策建议" min-width="120" />
         </el-table>
 
         <div class="pagination-container">
@@ -252,7 +288,8 @@ const pagination = reactive({
 
 // 查询参数
 const queryParams = reactive({
-  buySignal: '' // 默认为空字符串，表示全部
+  tradeDate: dayjs().format('YYYYMMDD'),
+  buySignal: ''
 })
 
 // 判断是否有已选条件
@@ -297,7 +334,7 @@ const handleSearch = async () => {
       tradeDate: selectedDate.value,
       page: pagination.current - 1,
       size: pagination.size,
-      buySignal: queryParams.buySignal === '' ? null : queryParams.buySignal // 处理全部的情况
+      buySignal: queryParams.buySignal === '' ? null : queryParams.buySignal
     }
 
     const response = await macd20DaysCalResult(params)
@@ -317,7 +354,7 @@ const handleSearch = async () => {
 // 重置搜索
 const resetSearch = () => {
   selectedDate.value = dayjs().format('YYYYMMDD')
-  queryParams.buySignal = '' // 重置为全部
+  queryParams.buySignal = ''
   pagination.current = 1
   handleSearch()
 }
@@ -358,6 +395,33 @@ const getValueClass = (value) => {
 onMounted(() => {
   handleSearch()
 })
+
+// 添加表格的排序事件处理
+const handleSortChange = ({ prop, order }) => {
+  if (!order) {
+    // 取消排序时恢复原始顺序
+    tableData.value = [...tableData.value]
+    return
+  }
+
+  tableData.value.sort((a, b) => {
+    let aValue = a[prop]
+    let bValue = b[prop]
+    
+    // 处理空值
+    if (aValue === null || aValue === undefined) return 1
+    if (bValue === null || bValue === undefined) return -1
+    
+    // 确保是数字类型
+    aValue = Number(aValue)
+    bValue = Number(bValue)
+    
+    // 根据排序方向返回比较结果
+    return order === 'ascending' 
+      ? aValue - bValue 
+      : bValue - aValue
+  })
+}
 </script>
 
 <style lang="scss" scoped>

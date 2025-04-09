@@ -15,8 +15,21 @@ import java.util.List;
  */
 public interface ITradeDailyService extends IService<TradeDaily> {
 
-    List<TradeDaily> getTradeDailyDataByTsCodeAndTradeDate(String tsCode, String tradeDate);
+    List<TradeDaily> getTradeDailyDataByTsCodeAndTradeDate(String tsCode, String tradeMonth);
 
     List<TradeDaily> getTradeDailyByListDate(String tsCode, List<String> tradeDateList);
+
+    List<TradeDaily> getLastData(Integer period);
+
+    TradeDaily getTradeDaily(String tsCode, String tradeDate);
+
+    /**
+     * 返回当前日期的下一个交易日的数据
+     */
+    TradeDaily getTradeDailyNext(String tsCode, String tradeDate);
+
+    TradeDaily getLastData(String tsCode);
+
+    String getLatestDate();
 
 }

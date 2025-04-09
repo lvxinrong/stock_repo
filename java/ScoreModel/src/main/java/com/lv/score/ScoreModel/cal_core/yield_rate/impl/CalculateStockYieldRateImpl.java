@@ -24,6 +24,9 @@ public class CalculateStockYieldRateImpl implements CalculateStockYieldRate {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         List<TradeDaily> dailyList = iTradeDailyService.getTradeDailyByListDate(tsCode,
                 StringUtils.isBlank(endTime) ? Collections.singletonList(startTime) : Arrays.asList(startTime, endTime));
+        if (dailyList.isEmpty()) {
+            return 0.0;
+        }
         Optional<TradeDaily> startTradeDaily = dailyList.stream().min(
                 Comparator.comparing(e -> LocalDate.parse(e.getTradeDate(), formatter)));
         Optional<TradeDaily> endTradeDaily = dailyList.stream().max(

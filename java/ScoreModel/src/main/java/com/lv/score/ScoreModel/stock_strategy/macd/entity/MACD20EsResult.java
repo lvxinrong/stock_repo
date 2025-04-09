@@ -42,6 +42,8 @@ public class MACD20EsResult {
     private String buyFormatString; // 购买建议
     @Field(type= FieldType.Boolean, name = "buySignal")
     private boolean buySignal;
+    @Field(type = FieldType.Integer, name = "buySignalTrueCount")
+    private Integer buySignalTrueCount;
 
 
     public MACD20EsResult(MACD20DayAnalysisResult data) {
@@ -57,6 +59,7 @@ public class MACD20EsResult {
         this.multiFilterPassed = data.getMultiFilterPassed() != null && data.getMultiFilterPassed();
         this.buyFormatString = data.getBuyFromatString();
         this.buySignal = data.getBuySignal();
+        this.buySignalTrueCount = data.getBuySignalTrueCount();
     }
 
 

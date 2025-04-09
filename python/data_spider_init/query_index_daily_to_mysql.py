@@ -155,19 +155,19 @@ def query_index_daily_by_day(index_code, tradeDate):
 
 
 if __name__ == '__main__':
-    # startYear = 2024
-    # endYear = 2025
-    # startMonth = 9
-    # endMonth = 3
+    startYear = 2025
+    endYear = 2025
+    startMonth = 3
+    endMonth = 3
     #
-    # query_index_daily("000905.SH", startYear, startMonth, endYear, endMonth)
-    # query_index_daily("000906.SH", startYear, startMonth, endYear, endMonth)
-    # query_index_daily("000852.SH", startYear, startMonth, endYear, endMonth)
-    # query_index_daily("399300.SZ", startYear, startMonth, endYear, endMonth)
-    # query_index_daily("000903.SH", startYear, startMonth, endYear, endMonth)
+    query_index_daily("000905.SH", startYear, startMonth, endYear, endMonth)
+    query_index_daily("000906.SH", startYear, startMonth, endYear, endMonth)
+    query_index_daily("000852.SH", startYear, startMonth, endYear, endMonth)
+    query_index_daily("399300.SZ", startYear, startMonth, endYear, endMonth)
+    query_index_daily("000903.SH", startYear, startMonth, endYear, endMonth)
     # query_index_daily_by_day("000905.SH", "20250314")
     # query_index_daily_by_day("000906.SH", "20250314")
     # query_index_daily_by_day("000852.SH", "20250314")
     # query_index_daily_by_day("399300.SZ", "20250314")
     # query_index_daily_by_day("000903.SH", "20250314")
-    query_all_index_daily_by_day("20250314")
+    # query_all_index_daily_by_day("20250314")

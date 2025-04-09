@@ -1,5 +1,6 @@
 package com.lv.score.ScoreModel.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lv.score.ScoreModel.entity.DailyBasicInfo;
 import com.lv.score.ScoreModel.mapper.DailyBasicInfoMapper;
 import com.lv.score.ScoreModel.service.IDailyBasicInfoService;
@@ -24,5 +25,13 @@ public class DailyBasicInfoServiceImpl extends ServiceImpl<DailyBasicInfoMapper,
     @Override
     public DailyBasicInfo getLatestData(String tsCode) {
         return dailyBasicInfoMapper.getLatestDataByTsCode(tsCode);
+    }
+
+    @Override
+    public DailyBasicInfo getBasicInfoByTsCodeAndTradeDate(String tsCode, String tradeDate) {
+        QueryWrapper<DailyBasicInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("ts_code", tsCode);
+        queryWrapper.eq("trade_date", tradeDate);
+        return getOne(queryWrapper);
     }
 }

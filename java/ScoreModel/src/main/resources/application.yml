@@ -19,7 +19,7 @@ mybatis-plus:
   mapper-locations: classpath:/xml/**.xml
 
 stock:
-  stock_month: 202501
+  stock_month: 202503
 
 logging:
   level:

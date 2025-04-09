@@ -19,7 +19,7 @@ export function generateMonthOptions(startYear, startMonth, endYear, endMonth) {
 }
 
 // 默认导出一个生成 2023 年 1 月到当前时间的 yyyymm 数组
-export const defaultMonthOptions = generateMonthOptions(2024, 9, 2025, 2)
+export const defaultMonthOptions = generateMonthOptions(2025, 1, 2025, 3)
 
 /**
  * 将当前时间转换为 yyyymmdd 格式的字符串

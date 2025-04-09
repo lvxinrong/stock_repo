@@ -40,6 +40,15 @@ public class MACDStrategyExecutor {
         }
     }
 
+    public void generateMACD20DaysHistory(String calDate) {
+        Map<String, MACD20DayAnalysisResult> calResult = IStockMACDCalculateInterface.get20DaysData(calDate);
+        try {
+            save2ES(calResult.values().stream().map(MACD20EsResult::new).toList());
+        }catch (Exception e) {
+            log.error("insert into es error", e);
+        }
+    }
+
     private void save2ES(List<MACD20EsResult> products) throws IOException {
         BulkRequest.Builder br = new BulkRequest.Builder();
         products.forEach(product->br.operations(operation->

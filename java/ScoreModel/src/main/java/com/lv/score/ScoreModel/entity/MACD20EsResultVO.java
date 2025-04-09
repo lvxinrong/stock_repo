@@ -20,6 +20,12 @@ public class MACD20EsResultVO {
     private boolean multiFilterPassed;   // 多指标过滤
     private String buyFormatString; // 购买建议
     private boolean buySignal;
+    // 累计涨幅
+    private BigDecimal cumulativeIncrease;
+    // 累计推荐买入次数
+    private int buySignalTrueCount;
+    // 总市值
+    private double totalVm;
 
     public MACD20EsResultVO(MACD20EsResult dto) {
         this.id = dto.getId();
@@ -34,5 +40,6 @@ public class MACD20EsResultVO {
         this.multiFilterPassed = dto.isMultiFilterPassed();
         this.buyFormatString = dto.getBuyFormatString();
         this.buySignal = dto.isBuySignal();
+        this.buySignalTrueCount = dto.getBuySignalTrueCount() == null ? 0 : dto.getBuySignalTrueCount();
     }
 }

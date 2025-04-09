@@ -4,6 +4,8 @@ import com.lv.score.ScoreModel.calculate.Calculate;
 import com.lv.score.ScoreModel.calculate.entity.CalculateResultMonth;
 import com.lv.score.ScoreModel.calculate.save.CalculateResultMonthEsEntity;
 import com.lv.score.ScoreModel.cal_core.save.impl.SaveMontScoreToEs;
+import com.lv.score.ScoreModel.entity.TradeDaily;
+import com.lv.score.ScoreModel.mapper.TradeDailyMapper;
 import com.lv.score.ScoreModel.service.ITradeDailyService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class TradeDailyServiceTest {
     @Autowired
     SaveMontScoreToEs saveMontScoreToEs;
 
+    @Autowired
+    TradeDailyMapper tradeDailyMapper;
+
     @Test
     public void test() {
         System.out.println(iTradeDailyService.getTradeDailyDataByTsCodeAndTradeDate("300350.SZ", "202410"));
@@ -41,4 +46,11 @@ public class TradeDailyServiceTest {
         System.out.println(saveList);
         saveMontScoreToEs.bulkSave(saveList);
     }
+
+    @Test
+    public void testNext() {
+        TradeDaily tradeDaily = iTradeDailyService.getTradeDailyNext("300350.SZ", "20241010");
+        System.out.println(tradeDaily);
+    }
+
 }
